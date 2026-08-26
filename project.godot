@@ -7,7 +7,7 @@ config_version=5
 [application]
 
 config/name="AGE LOOP"
-config/version="0.8.0"
+config/version="0.9.0"
 run/main_scene="res://scenes/bootstrap/bootstrap.tscn"
 config/features=PackedStringArray("4.7", "Mobile")
 boot_splash/bg_color=Color(0.0705882, 0.0980392, 0.160784, 1)
@@ -23,6 +23,7 @@ LootManager="*res://systems/loot_manager.gd"
 InventoryManager="*res://systems/inventory_manager.gd"
 ResearchManager="*res://systems/research_manager.gd"
 BuildingManager="*res://systems/building_manager.gd"
+OfflineManager="*res://systems/offline_manager.gd"
 SaveManager="*res://systems/save_manager.gd"
 
 [display]

@@ -80,7 +80,7 @@ vertical_alignment = 1
 layout_mode = 2
 theme_override_colors/font_color = Color(0.6, 0.68, 0.8, 1)
 theme_override_font_sizes/font_size = 48
-text = "Version 0.8.0"
+text = "Version 0.9.0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -135,3 +135,58 @@ theme_override_styles/hover = SubResource("btn_hover")
 theme_override_styles/pressed = SubResource("btn_pressed")
 theme_override_styles/focus = SubResource("btn_hover")
 text = "BASE"
+
+[node name="OfflinePanel" type="CenterContainer" parent="."]
+unique_name_in_owner = true
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="PanelContainer" parent="OfflinePanel"]
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="OfflinePanel/Panel"]
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="OfflineTitle" type="Label" parent="OfflinePanel/Panel/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.94, 0.96, 1, 1)
+theme_override_font_sizes/font_size = 72
+text = "¡VOLVISTE!"
+horizontal_alignment = 1
+
+[node name="OfflineTimeLabel" type="Label" parent="OfflinePanel/Panel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.62, 0.68, 0.8, 1)
+theme_override_font_sizes/font_size = 36
+text = "Tiempo fuera: 0m"
+horizontal_alignment = 1
+
+[node name="OfflineGoldLabel" type="Label" parent="OfflinePanel/Panel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.78, 0.4, 1)
+theme_override_font_sizes/font_size = 42
+text = "ORO +0"
+horizontal_alignment = 1
+
+[node name="OfflineMatLabel" type="Label" parent="OfflinePanel/Panel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.6, 0.7, 0.85, 1)
+theme_override_font_sizes/font_size = 42
+text = "MAT +0"
+horizontal_alignment = 1
+
+[node name="ClaimButton" type="Button" parent="OfflinePanel/Panel/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(400, 110)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 48
+text = "RECLAMAR"
