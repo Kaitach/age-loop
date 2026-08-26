@@ -1,0 +1,201 @@
+[gd_scene load_steps=11 format=3]
+
+[ext_resource type="Script" path="res://scripts/battle/battle.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/battle/base_building.gd" id="2"]
+[ext_resource type="Script" path="res://scripts/battle/player.gd" id="3"]
+
+[sub_resource type="StyleBoxFlat" id="btn_normal"]
+content_margin_left = 30.0
+content_margin_top = 18.0
+content_margin_right = 30.0
+content_margin_bottom = 18.0
+bg_color = Color(0.184314, 0.478431, 0.858824, 1)
+corner_radius_top_left = 22
+corner_radius_top_right = 22
+corner_radius_bottom_right = 22
+corner_radius_bottom_left = 22
+
+[sub_resource type="StyleBoxFlat" id="btn_hover"]
+content_margin_left = 30.0
+content_margin_top = 18.0
+content_margin_right = 30.0
+content_margin_bottom = 18.0
+bg_color = Color(0.266667, 0.572549, 0.972549, 1)
+corner_radius_top_left = 22
+corner_radius_top_right = 22
+corner_radius_bottom_right = 22
+corner_radius_bottom_left = 22
+
+[sub_resource type="StyleBoxFlat" id="btn_pressed"]
+content_margin_left = 30.0
+content_margin_top = 18.0
+content_margin_right = 30.0
+content_margin_bottom = 18.0
+bg_color = Color(0.121569, 0.356863, 0.686275, 1)
+corner_radius_top_left = 22
+corner_radius_top_right = 22
+corner_radius_bottom_right = 22
+corner_radius_bottom_left = 22
+
+[sub_resource type="StyleBoxFlat" id="panel_box"]
+content_margin_left = 56.0
+content_margin_top = 48.0
+content_margin_right = 56.0
+content_margin_bottom = 48.0
+bg_color = Color(0.09, 0.12, 0.19, 0.97)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.3, 0.45, 0.7, 0.6)
+corner_radius_top_left = 24
+corner_radius_top_right = 24
+corner_radius_bottom_right = 24
+corner_radius_bottom_left = 24
+
+[sub_resource type="StyleBoxFlat" id="bar_bg"]
+bg_color = Color(0, 0, 0, 0.45)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="bar_fill_green"]
+bg_color = Color(0.3, 0.8, 0.35, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="bar_fill_orange"]
+bg_color = Color(0.95, 0.62, 0.2, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[node name="Battle" type="Node2D"]
+script = ExtResource("1")
+
+[node name="Background" type="ColorRect" parent="."]
+offset_right = 1080.0
+offset_bottom = 1920.0
+color = Color(0.0509804, 0.0705882, 0.121569, 1)
+
+[node name="GroundStrip" type="ColorRect" parent="."]
+offset_top = 1560.0
+offset_right = 1080.0
+offset_bottom = 1920.0
+color = Color(0.0862745, 0.109804, 0.164706, 1)
+
+[node name="World" type="Node2D" parent="."]
+
+[node name="Base" type="Node2D" parent="World"]
+position = Vector2(540, 1725)
+script = ExtResource("2")
+
+[node name="Player" type="Node2D" parent="World"]
+position = Vector2(540, 1400)
+script = ExtResource("3")
+
+[node name="Enemies" type="Node2D" parent="World"]
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="TopVBox" type="VBoxContainer" parent="UI"]
+anchors_preset = 0
+offset_left = 40.0
+offset_top = 34.0
+offset_right = 1040.0
+offset_bottom = 160.0
+theme_override_constants/separation = 14
+
+[node name="WaveLabel" type="Label" parent="UI/TopVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.94, 0.96, 1, 1)
+theme_override_font_sizes/font_size = 58
+text = "OLEADA 1-1"
+horizontal_alignment = 1
+
+[node name="PlayerBar" type="ProgressBar" parent="UI/TopVBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(1000, 34)
+layout_mode = 2
+theme_override_styles/background = SubResource("bar_bg")
+theme_override_styles/fill = SubResource("bar_fill_green")
+show_percentage = false
+
+[node name="BaseBar" type="ProgressBar" parent="UI"]
+unique_name_in_owner = true
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 40.0
+offset_top = -150.0
+offset_right = 1040.0
+offset_bottom = -116.0
+grow_vertical = 0
+theme_override_styles/background = SubResource("bar_bg")
+theme_override_styles/fill = SubResource("bar_fill_orange")
+show_percentage = false
+
+[node name="ResultPanel" type="CenterContainer" parent="UI"]
+unique_name_in_owner = true
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="PanelContainer" parent="UI/ResultPanel"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("panel_box")
+
+[node name="VBox" type="VBoxContainer" parent="UI/ResultPanel/Panel"]
+layout_mode = 2
+theme_override_constants/separation = 28
+
+[node name="ResultTitle" type="Label" parent="UI/ResultPanel/Panel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.94, 0.96, 1, 1)
+theme_override_font_sizes/font_size = 92
+text = "VICTORIA"
+horizontal_alignment = 1
+
+[node name="ResultSub" type="Label" parent="UI/ResultPanel/Panel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.62, 0.68, 0.8, 1)
+theme_override_font_sizes/font_size = 40
+text = "La oleada fue repelida."
+horizontal_alignment = 1
+
+[node name="Buttons" type="HBoxContainer" parent="UI/ResultPanel/Panel/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 24
+alignment = 1
+
+[node name="RetryButton" type="Button" parent="UI/ResultPanel/Panel/VBox/Buttons"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(340, 130)
+layout_mode = 2
+theme_override_font_sizes/font_size = 46
+theme_override_styles/normal = SubResource("btn_normal")
+theme_override_styles/hover = SubResource("btn_hover")
+theme_override_styles/pressed = SubResource("btn_pressed")
+theme_override_styles/focus = SubResource("btn_hover")
+text = "REINTENTAR"
+
+[node name="MenuButton" type="Button" parent="UI/ResultPanel/Panel/VBox/Buttons"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(280, 130)
+layout_mode = 2
+theme_override_font_sizes/font_size = 46
+theme_override_styles/normal = SubResource("btn_normal")
+theme_override_styles/hover = SubResource("btn_hover")
+theme_override_styles/pressed = SubResource("btn_pressed")
+theme_override_styles/focus = SubResource("btn_hover")
+text = "MENU"

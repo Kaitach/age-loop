@@ -1,11 +1,11 @@
 extends Control
 
+const BATTLE_SCENE := "res://scenes/battle/battle.tscn"
+
 @onready var play_button: Button = %PlayButton
-@onready var hint_label: Label = %HintLabel
 
 func _ready() -> void:
-	hint_label.visible = false
 	play_button.pressed.connect(_on_play_pressed)
 
 func _on_play_pressed() -> void:
-	hint_label.visible = true
+	get_tree().change_scene_to_file(BATTLE_SCENE)
