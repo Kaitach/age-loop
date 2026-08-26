@@ -11,7 +11,6 @@ func _initialize() -> void:
 	var packed: PackedScene = load(BATTLE_SCENE)
 	_battle = packed.instantiate()
 	root.add_child(_battle)
-	_battle.spawn_interval = 0.05
 
 func _process(_delta: float) -> bool:
 	_frames += 1

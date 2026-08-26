@@ -1,0 +1,50 @@
+{
+  "normal": {
+    "name": "Grun",
+    "base_health": 45,
+    "damage": 7,
+    "movement_speed": 110,
+    "attack_speed": 1.0,
+    "attack_range": 95,
+    "body_size": 72,
+    "body_color": [0.86, 0.28, 0.25],
+    "is_boss": false,
+    "rewards": { "gold": 8, "science": 1, "materials": 1 }
+  },
+  "fast": {
+    "name": "Corredor",
+    "base_health": 26,
+    "damage": 5,
+    "movement_speed": 200,
+    "attack_speed": 1.4,
+    "attack_range": 85,
+    "body_size": 56,
+    "body_color": [0.95, 0.62, 0.15],
+    "is_boss": false,
+    "rewards": { "gold": 6, "science": 1, "materials": 1 }
+  },
+  "tank": {
+    "name": "Colosal",
+    "base_health": 130,
+    "damage": 13,
+    "movement_speed": 65,
+    "attack_speed": 0.7,
+    "attack_range": 105,
+    "body_size": 96,
+    "body_color": [0.58, 0.32, 0.78],
+    "is_boss": false,
+    "rewards": { "gold": 16, "science": 2, "materials": 3 }
+  },
+  "boss_mamut": {
+    "name": "Mamut",
+    "base_health": 950,
+    "damage": 24,
+    "movement_speed": 55,
+    "attack_speed": 0.6,
+    "attack_range": 160,
+    "body_size": 150,
+    "body_color": [0.62, 0.42, 0.28],
+    "is_boss": true,
+    "rewards": { "gold": 100, "science": 14, "materials": 20 }
+  }
+}

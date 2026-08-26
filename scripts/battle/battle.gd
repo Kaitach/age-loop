@@ -3,18 +3,9 @@ extends Node2D
 enum State { FIGHTING, WON, LOST }
 
 const MENU_SCENE := "res://scenes/menu/main_menu.tscn"
-const WAVE_LABEL_TEXT := "OLEADA 1-1"
-const TOTAL_ENEMIES := 8
-const SPAWN_Y := -80.0
-const SPAWN_X_MIN := 140.0
-const SPAWN_X_MAX := 940.0
-const FIRST_SPAWN_DELAY := 0.6
-
-@export var spawn_interval: float = 1.3
+const MAX_WAVE := 10
 
 var state: State = State.FIGHTING
-var _enemies_to_spawn: int = TOTAL_ENEMIES
-var _spawn_cooldown: float = FIRST_SPAWN_DELAY
 
 @onready var player: Player = $World/Player
 @onready var base_building: BaseBuilding = $World/Base
@@ -28,8 +19,13 @@ var _spawn_cooldown: float = FIRST_SPAWN_DELAY
 @onready var retry_button: Button = %RetryButton
 @onready var menu_button: Button = %MenuButton
 
+var wave_manager := WaveManager.new()
+
 func _ready() -> void:
-	wave_label.text = WAVE_LABEL_TEXT
+	add_child(wave_manager)
+	wave_manager.spawn_enemy.connect(_on_spawn_enemy)
+	wave_manager.start(GameState.world, GameState.wave)
+	wave_label.text = "OLEADA %d-%d" % [GameState.world, GameState.wave]
 	player_bar.max_value = player.max_health
 	player_bar.value = player.health
 	base_bar.max_value = base_building.max_health
@@ -44,20 +40,19 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	if state != State.FIGHTING:
 		return
-	_spawn_tick(delta)
-	if _enemies_to_spawn == 0 and get_tree().get_nodes_in_group("enemies").is_empty():
-		_end_battle(true)
+	wave_manager.tick(delta)
+	if wave_manager.finished_spawning() and get_tree().get_nodes_in_group("enemies").is_empty():
+		_victory()
 
-func _spawn_tick(delta: float) -> void:
-	if _enemies_to_spawn <= 0:
-		return
-	_spawn_cooldown -= delta
-	if _spawn_cooldown > 0.0:
-		return
-	_spawn_cooldown = spawn_interval
-	_enemies_to_spawn -= 1
+func _on_spawn_enemy(enemy_id: String, position_p: Vector2) -> void:
 	var enemy := Enemy.new()
-	enemy.position = Vector2(randf_range(SPAWN_X_MIN, SPAWN_X_MAX), SPAWN_Y)
+	enemy.setup_from_data(
+		enemy_id,
+		WaveManager.get_enemy_data(enemy_id),
+		WaveManager.hp_scale_for(GameState.world, GameState.wave),
+		WaveManager.dmg_scale_for(GameState.world, GameState.wave)
+	)
+	enemy.position = position_p
 	enemies_container.add_child(enemy)
 
 func is_over() -> bool:
@@ -65,6 +60,15 @@ func is_over() -> bool:
 
 func did_win() -> bool:
 	return state == State.WON
+
+func _victory() -> void:
+	var rewards := WaveManager.calculate_rewards(GameState.world, GameState.wave)
+	result_sub.text = "+%d oro   +%d ciencia   +%d materiales" % [rewards["gold"], rewards["science"], rewards["materials"]]
+	if GameState.wave >= MAX_WAVE:
+		GameState.wave = MAX_WAVE
+	else:
+		GameState.wave += 1
+	_end_battle(true)
 
 func _end_battle(victory: bool) -> void:
 	if state == State.WON or state == State.LOST:
@@ -77,7 +81,8 @@ func _end_battle(victory: bool) -> void:
 	player.set_process(false)
 	base_building.set_process(false)
 	result_title.text = "VICTORIA" if victory else "DERROTA"
-	result_sub.text = "La oleada fue repelida." if victory else "La base ha caido."
+	if not victory:
+		result_sub.text = "La base ha caido."
 	result_panel.visible = true
 
 func _on_retry_pressed() -> void:

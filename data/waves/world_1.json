@@ -1,0 +1,15 @@
+{
+  "world": 1,
+  "waves": [
+    { "wave": 1, "groups": [ { "enemy": "normal", "count": 4 } ] },
+    { "wave": 2, "groups": [ { "enemy": "normal", "count": 6 } ] },
+    { "wave": 3, "groups": [ { "enemy": "normal", "count": 5 }, { "enemy": "fast", "count": 2 } ] },
+    { "wave": 4, "groups": [ { "enemy": "normal", "count": 6 }, { "enemy": "fast", "count": 3 } ] },
+    { "wave": 5, "groups": [ { "enemy": "tank", "count": 2 }, { "enemy": "normal", "count": 4 } ] },
+    { "wave": 6, "groups": [ { "enemy": "normal", "count": 6 }, { "enemy": "fast", "count": 4 } ] },
+    { "wave": 7, "groups": [ { "enemy": "tank", "count": 3 }, { "enemy": "normal", "count": 5 } ] },
+    { "wave": 8, "groups": [ { "enemy": "fast", "count": 6 }, { "enemy": "normal", "count": 4 } ] },
+    { "wave": 9, "groups": [ { "enemy": "tank", "count": 3 }, { "enemy": "fast", "count": 4 }, { "enemy": "normal", "count": 4 } ] },
+    { "wave": 10, "boss": "boss_mamut", "groups": [ { "enemy": "normal", "count": 4 } ] }
+  ]
+}

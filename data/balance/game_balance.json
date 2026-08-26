@@ -1,0 +1,11 @@
+{
+  "enemy_hp_growth": 1.12,
+  "enemy_damage_growth": 1.09,
+  "gold_growth": 1.10,
+  "science_growth": 1.07,
+  "materials_growth": 1.08,
+  "building_cost_growth": 1.35,
+  "max_offline_hours": 8,
+  "critical_chance_base": 0.05,
+  "critical_damage_base": 1.5
+}
