@@ -1,0 +1,4 @@
+.godot/
+*.tmp
+export_presets.cfg.secret
+*.keystore
