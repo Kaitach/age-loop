@@ -54,6 +54,7 @@ func _ready() -> void:
 	base_bar.value = base_building.health
 	player.damaged.connect(func(_amount: int) -> void: player_bar.value = player.health)
 	base_building.damaged.connect(func(_amount: int) -> void: base_bar.value = base_building.health)
+	player.critical_hit.connect(_on_player_crit)
 	player.died.connect(_end_battle.bind(false))
 	base_building.died.connect(_end_battle.bind(false))
 	retry_button.pressed.connect(_on_retry_pressed)
@@ -148,6 +149,15 @@ func _show_drop_card() -> void:
 	item_stats.text = "\n".join(lines)
 	item_compare.text = _build_compare_text(String(best.get("slot", "")))
 	item_card.visible = true
+	item_card.scale = Vector2(0.85, 0.85)
+	item_card.modulate.a = 0.0
+	var tw := create_tween()
+	tw.tween_property(item_card, "scale", Vector2(1.0, 1.0), 0.3).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	tw.parallel().tween_property(item_card, "modulate:a", 1.0, 0.2)
+	if TutorialManager.should_show("first_drop"):
+		TutorialManager.mark_seen("first_drop")
+		_show_tutorial("¡Conseguiste un objeto! Equipalo para ser más fuerte.")
+	AudioManager.play_sfx("drop")
 
 func _build_compare_text(slot: String) -> String:
 	var current = GameState.equipped_items.get(slot, null)
@@ -214,7 +224,16 @@ func _end_battle(victory: bool) -> void:
 	result_title.text = "VICTORIA" if victory else "DERROTA"
 	if not victory:
 		result_sub.text = "La base ha caido."
+	else:
+		if TutorialManager.should_show("first_victory"):
+			TutorialManager.mark_seen("first_victory")
+			_show_tutorial("¡Victoria! Ganaste recursos. Usa MEJORAS para fortalecerte.")
+		AudioManager.play_sfx("victory")
+		_shake(6.0)
 	result_panel.visible = true
+	result_panel.scale = Vector2(0.9, 0.9)
+	var tw := create_tween()
+	tw.tween_property(result_panel, "scale", Vector2(1.0, 1.0), 0.3).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 
 func _refresh_currency() -> void:
 	currency_label.text = "ORO %d    CIENCIA %d    MAT %d" % [GameState.gold, GameState.science, GameState.materials]
@@ -292,6 +311,52 @@ func _refresh_upgrade_rows() -> void:
 			row["name"].text = "%s  Nv.%d  (%s)" % [def.get("name", upgrade_id), level, def.get("desc", "")]
 			row["button"].text = "MEJORAR — %d ORO" % Upgrades.cost_for(upgrade_id)
 			row["button"].disabled = not Economy.can_afford({ "gold": Upgrades.cost_for(upgrade_id) })
+
+func _on_player_crit(target: Combatant, dmg: int) -> void:
+	if not is_instance_valid(target):
+		return
+	_show_floating_text(target.global_position + Vector2(0, -70), "¡CRÍTICO! %d" % dmg, Color(1, 0.85, 0.2))
+	_shake(3.0)
+
+func _show_floating_text(pos: Vector2, text: String, color: Color) -> void:
+	var label := Label.new()
+	label.text = text
+	label.add_theme_font_size_override("font_size", 44)
+	label.add_theme_color_override("font_color", color)
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	label.position = pos + Vector2(-120, -20)
+	label.z_index = 10
+	$World.add_child(label)
+	var tw := create_tween()
+	tw.tween_property(label, "position:y", label.position.y - 60.0, 0.7).set_ease(Tween.EASE_OUT)
+	tw.parallel().tween_property(label, "modulate:a", 0.0, 0.7)
+	tw.tween_callback(label.queue_free)
+
+func _show_tutorial(text: String) -> void:
+	var toast := PanelContainer.new()
+	toast.position = Vector2(60, 220)
+	toast.size = Vector2(960, 0)
+	var lbl := Label.new()
+	lbl.text = text
+	lbl.add_theme_font_size_override("font_size", 32)
+	lbl.add_theme_color_override("font_color", Color(1, 0.92, 0.5))
+	lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	toast.add_child(lbl)
+	$UI.add_child(toast)
+	var tw := create_tween()
+	toast.modulate.a = 0.0
+	tw.tween_property(toast, "modulate:a", 1.0, 0.3)
+	tw.tween_interval(3.0)
+	tw.tween_property(toast, "modulate:a", 0.0, 0.4)
+	tw.tween_callback(toast.queue_free)
+
+func _shake(intensity: float) -> void:
+	var orig: Vector2 = $World.position
+	var tw := create_tween()
+	tw.tween_property($World, "position", orig + Vector2(intensity, -intensity), 0.04)
+	tw.tween_property($World, "position", orig + Vector2(-intensity, intensity), 0.04)
+	tw.tween_property($World, "position", orig, 0.04)
 
 func _on_retry_pressed() -> void:
 	get_tree().reload_current_scene()

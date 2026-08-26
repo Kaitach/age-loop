@@ -24,4 +24,6 @@ var stats: Dictionary = {
 	"waves_completed": 0,
 }
 
+var tutorial_flags: Dictionary = {}
+
 var last_played_at: int = 0

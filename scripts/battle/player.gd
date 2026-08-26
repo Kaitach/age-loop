@@ -9,6 +9,8 @@ const BODY_RADIUS := 46.0
 @export var attack_range: float = 430.0
 @export var projectile_speed: float = 720.0
 
+signal critical_hit(target: Combatant, damage: int)
+
 var damage: int = 14
 var critical_chance: float = 0.05
 var critical_damage: float = 1.5
@@ -54,10 +56,23 @@ func _nearest_enemy() -> Enemy:
 func _shoot(target: Enemy) -> void:
 	var projectile := Projectile.new()
 	var hit_damage := damage
-	if randf() < critical_chance:
+	var is_crit := randf() < critical_chance
+	if is_crit:
 		hit_damage = int(round(damage * critical_damage))
+		critical_hit.emit(target, hit_damage)
+		_play_sfx("critical")
+	else:
+		_play_sfx("hit")
 	projectile.setup(global_position + Vector2(0, -34), target, hit_damage, projectile_speed)
 	get_parent().add_child(projectile)
+
+func _play_sfx(id: String) -> void:
+	var tree := get_tree()
+	if tree == null:
+		return
+	var am := tree.root.get_node_or_null("/root/AudioManager")
+	if am != null:
+		am.play_sfx(id)
 
 func _on_death() -> void:
 	_dying = true

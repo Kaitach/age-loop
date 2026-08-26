@@ -54,6 +54,7 @@ func build_save_data() -> Dictionary:
 			"bosses_killed": GameState.stats.get("bosses_killed", 0),
 			"waves_completed": GameState.stats.get("waves_completed", 0),
 		},
+		"tutorial_flags": GameState.tutorial_flags,
 		"timestamps": { "last_played_at": GameState.last_played_at },
 	}
 
@@ -127,3 +128,4 @@ func _apply_to_game_state(data: Dictionary) -> void:
 
 	var timestamps: Dictionary = data.get("timestamps", {})
 	GameState.last_played_at = int(timestamps.get("last_played_at", 0))
+	GameState.tutorial_flags = data.get("tutorial_flags", {})
