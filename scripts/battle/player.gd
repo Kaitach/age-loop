@@ -3,15 +3,20 @@ extends Combatant
 
 const BODY_RADIUS := 46.0
 
-@export var damage: int = 14
+@export var base_damage: int = 14
+@export var base_max_health: int = 100
 @export var attack_speed: float = 1.2
 @export var attack_range: float = 430.0
 @export var projectile_speed: float = 720.0
+
+var damage: int = 14
 
 var _attack_cooldown: float = 0.6
 var _dying: bool = false
 
 func _ready() -> void:
+	damage = base_damage + Upgrades.bonus_value("player_damage")
+	max_health = base_max_health + Upgrades.bonus_value("player_health")
 	super()
 	add_to_group("player")
 

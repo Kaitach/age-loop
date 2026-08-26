@@ -4,7 +4,10 @@ extends Combatant
 const WIDTH := 340.0
 const HEIGHT := 150.0
 
+@export var base_max_health: int = 300
+
 func _ready() -> void:
+	max_health = base_max_health + Upgrades.bonus_value("base_health")
 	super()
 	add_to_group("base_fort")
 

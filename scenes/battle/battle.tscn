@@ -118,6 +118,14 @@ theme_override_font_sizes/font_size = 58
 text = "OLEADA 1-1"
 horizontal_alignment = 1
 
+[node name="CurrencyLabel" type="Label" parent="UI/TopVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.78, 0.4, 1)
+theme_override_font_sizes/font_size = 38
+text = "ORO 0    CIENCIA 0    MAT 0"
+horizontal_alignment = 1
+
 [node name="PlayerBar" type="ProgressBar" parent="UI/TopVBox"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(1000, 34)
@@ -180,22 +188,82 @@ alignment = 1
 
 [node name="RetryButton" type="Button" parent="UI/ResultPanel/Panel/VBox/Buttons"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(340, 130)
+custom_minimum_size = Vector2(300, 130)
 layout_mode = 2
-theme_override_font_sizes/font_size = 46
+theme_override_font_sizes/font_size = 44
 theme_override_styles/normal = SubResource("btn_normal")
 theme_override_styles/hover = SubResource("btn_hover")
 theme_override_styles/pressed = SubResource("btn_pressed")
 theme_override_styles/focus = SubResource("btn_hover")
 text = "REINTENTAR"
 
-[node name="MenuButton" type="Button" parent="UI/ResultPanel/Panel/VBox/Buttons"]
+[node name="UpgradesButton" type="Button" parent="UI/ResultPanel/Panel/VBox/Buttons"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(280, 130)
 layout_mode = 2
-theme_override_font_sizes/font_size = 46
+theme_override_font_sizes/font_size = 44
+theme_override_styles/normal = SubResource("btn_normal")
+theme_override_styles/hover = SubResource("btn_hover")
+theme_override_styles/pressed = SubResource("btn_pressed")
+theme_override_styles/focus = SubResource("btn_hover")
+text = "MEJORAS"
+
+[node name="MenuButton" type="Button" parent="UI/ResultPanel/Panel/VBox/Buttons"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(240, 130)
+layout_mode = 2
+theme_override_font_sizes/font_size = 44
 theme_override_styles/normal = SubResource("btn_normal")
 theme_override_styles/hover = SubResource("btn_hover")
 theme_override_styles/pressed = SubResource("btn_pressed")
 theme_override_styles/focus = SubResource("btn_hover")
 text = "MENU"
+
+[node name="UpgradesPanel" type="CenterContainer" parent="UI"]
+unique_name_in_owner = true
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="PanelContainer" parent="UI/UpgradesPanel"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("panel_box")
+
+[node name="VBox" type="VBoxContainer" parent="UI/UpgradesPanel/Panel"]
+layout_mode = 2
+theme_override_constants/separation = 22
+
+[node name="UpgTitle" type="Label" parent="UI/UpgradesPanel/Panel/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.94, 0.96, 1, 1)
+theme_override_font_sizes/font_size = 72
+text = "MEJORAS"
+horizontal_alignment = 1
+
+[node name="UpgradesList" type="VBoxContainer" parent="UI/UpgradesPanel/Panel/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(800, 0)
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="NoteLabel" type="Label" parent="UI/UpgradesPanel/Panel/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.62, 0.68, 0.8, 1)
+theme_override_font_sizes/font_size = 30
+text = "Los cambios se aplican en la proxima oleada."
+horizontal_alignment = 1
+
+[node name="CloseUpgradesButton" type="Button" parent="UI/UpgradesPanel/Panel/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(320, 110)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 42
+theme_override_styles/normal = SubResource("btn_normal")
+theme_override_styles/hover = SubResource("btn_hover")
+theme_override_styles/pressed = SubResource("btn_pressed")
+theme_override_styles/focus = SubResource("btn_hover")
+text = "CERRAR"

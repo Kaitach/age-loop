@@ -1,0 +1,26 @@
+{
+  "player_damage": {
+    "name": "Daño del heroe",
+    "desc": "+4 de daño",
+    "base_cost": 50,
+    "cost_growth": 1.5,
+    "per_level": 4,
+    "max_level": 50
+  },
+  "player_health": {
+    "name": "Vida del heroe",
+    "desc": "+20 de vida",
+    "base_cost": 40,
+    "cost_growth": 1.45,
+    "per_level": 20,
+    "max_level": 50
+  },
+  "base_health": {
+    "name": "Muralla",
+    "desc": "+40 de vida de base",
+    "base_cost": 70,
+    "cost_growth": 1.55,
+    "per_level": 40,
+    "max_level": 50
+  }
+}

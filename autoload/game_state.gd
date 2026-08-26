@@ -14,5 +14,6 @@ var inventory: Array = []
 var equipped_items: Dictionary = {}
 var buildings: Dictionary = {}
 var technologies: Dictionary = {}
+var upgrades: Dictionary = {}
 
 var current_research = null

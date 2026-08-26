@@ -6,11 +6,14 @@ const MENU_SCENE := "res://scenes/menu/main_menu.tscn"
 const MAX_WAVE := 10
 
 var state: State = State.FIGHTING
+var _upgrade_rows: Dictionary = {}
+var _upgrades_built := false
 
 @onready var player: Player = $World/Player
 @onready var base_building: BaseBuilding = $World/Base
 @onready var enemies_container: Node2D = $World/Enemies
 @onready var wave_label: Label = %WaveLabel
+@onready var currency_label: Label = %CurrencyLabel
 @onready var player_bar: ProgressBar = %PlayerBar
 @onready var base_bar: ProgressBar = %BaseBar
 @onready var result_panel: CenterContainer = %ResultPanel
@@ -18,6 +21,10 @@ var state: State = State.FIGHTING
 @onready var result_sub: Label = %ResultSub
 @onready var retry_button: Button = %RetryButton
 @onready var menu_button: Button = %MenuButton
+@onready var upgrades_button: Button = %UpgradesButton
+@onready var upgrades_panel: CenterContainer = %UpgradesPanel
+@onready var upgrades_list: VBoxContainer = %UpgradesList
+@onready var close_upgrades_button: Button = %CloseUpgradesButton
 
 var wave_manager := WaveManager.new()
 
@@ -36,6 +43,10 @@ func _ready() -> void:
 	base_building.died.connect(_end_battle.bind(false))
 	retry_button.pressed.connect(_on_retry_pressed)
 	menu_button.pressed.connect(_on_menu_pressed)
+	upgrades_button.pressed.connect(_open_upgrades)
+	close_upgrades_button.pressed.connect(func() -> void: upgrades_panel.visible = false)
+	SignalBus.currency_changed.connect(_refresh_currency)
+	_refresh_currency()
 
 func _process(delta: float) -> void:
 	if state != State.FIGHTING:
@@ -63,6 +74,9 @@ func did_win() -> bool:
 
 func _victory() -> void:
 	var rewards := WaveManager.calculate_rewards(GameState.world, GameState.wave)
+	Economy.add_gold(int(rewards["gold"]))
+	Economy.add_science(int(rewards["science"]))
+	Economy.add_materials(int(rewards["materials"]))
 	result_sub.text = "+%d oro   +%d ciencia   +%d materiales" % [rewards["gold"], rewards["science"], rewards["materials"]]
 	if GameState.wave >= MAX_WAVE:
 		GameState.wave = MAX_WAVE
@@ -84,6 +98,52 @@ func _end_battle(victory: bool) -> void:
 	if not victory:
 		result_sub.text = "La base ha caido."
 	result_panel.visible = true
+
+func _refresh_currency() -> void:
+	currency_label.text = "ORO %d    CIENCIA %d    MAT %d" % [GameState.gold, GameState.science, GameState.materials]
+
+func _open_upgrades() -> void:
+	if not _upgrades_built:
+		_build_upgrade_rows()
+		_upgrades_built = true
+	_refresh_upgrade_rows()
+	upgrades_panel.visible = true
+
+func _build_upgrade_rows() -> void:
+	for upgrade_id in Upgrades.defs().keys():
+		var def: Dictionary = Upgrades.defs()[upgrade_id]
+		var row := VBoxContainer.new()
+		row.add_theme_constant_override("separation", 6)
+		var name_label := Label.new()
+		name_label.add_theme_font_size_override("font_size", 40)
+		name_label.text = String(def.get("name", upgrade_id))
+		row.add_child(name_label)
+		var buy_button := Button.new()
+		buy_button.custom_minimum_size = Vector2(760, 104)
+		buy_button.add_theme_font_size_override("font_size", 36)
+		buy_button.pressed.connect(_on_upgrade_pressed.bind(String(upgrade_id)))
+		row.add_child(buy_button)
+		upgrades_list.add_child(row)
+		_upgrade_rows[upgrade_id] = { "name": name_label, "button": buy_button }
+
+func _on_upgrade_pressed(upgrade_id: String) -> void:
+	if Upgrades.try_buy(upgrade_id):
+		_refresh_currency()
+		_refresh_upgrade_rows()
+
+func _refresh_upgrade_rows() -> void:
+	for upgrade_id in _upgrade_rows.keys():
+		var row: Dictionary = _upgrade_rows[upgrade_id]
+		var level := Upgrades.get_level(upgrade_id)
+		var def: Dictionary = Upgrades.defs()[upgrade_id]
+		if Upgrades.is_maxed(upgrade_id):
+			row["name"].text = "%s  Nv.MAX (%s)" % [def.get("name", upgrade_id), def.get("desc", "")]
+			row["button"].text = "MAXIMO"
+			row["button"].disabled = true
+		else:
+			row["name"].text = "%s  Nv.%d  (%s)" % [def.get("name", upgrade_id), level, def.get("desc", "")]
+			row["button"].text = "MEJORAR — %d ORO" % Upgrades.cost_for(upgrade_id)
+			row["button"].disabled = not Economy.can_afford({ "gold": Upgrades.cost_for(upgrade_id) })
 
 func _on_retry_pressed() -> void:
 	get_tree().reload_current_scene()
