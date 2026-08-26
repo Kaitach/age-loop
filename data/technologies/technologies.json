@@ -1,0 +1,137 @@
+{
+  "gathering": {
+    "id": "gathering",
+    "name": "Recoleccion",
+    "era": "prehistoric",
+    "cost": { "gold": 120, "science": 6 },
+    "duration_seconds": 30,
+    "requirements": [],
+    "effects": [{ "type": "stat_multiplier", "target": "gold_reward", "value": 0.1 }]
+  },
+  "hunting": {
+    "id": "hunting",
+    "name": "Caza",
+    "era": "prehistoric",
+    "cost": { "gold": 150, "science": 8 },
+    "duration_seconds": 40,
+    "requirements": [],
+    "effects": [{ "type": "stat_multiplier", "target": "loot_bonus", "value": 0.1 }]
+  },
+  "club_crafting": {
+    "id": "club_crafting",
+    "name": "Garrote",
+    "era": "prehistoric",
+    "cost": { "gold": 100, "science": 5 },
+    "duration_seconds": 30,
+    "requirements": [],
+    "effects": [{ "type": "unlock_item", "value": "stone_club" }]
+  },
+  "spear_crafting": {
+    "id": "spear_crafting",
+    "name": "Lanza",
+    "era": "prehistoric",
+    "cost": { "gold": 200, "science": 10 },
+    "duration_seconds": 50,
+    "requirements": ["club_crafting"],
+    "effects": [{ "type": "unlock_item", "value": "stone_spear" }]
+  },
+  "campfire": {
+    "id": "campfire",
+    "name": "Fogata",
+    "era": "prehistoric",
+    "cost": { "gold": 180, "science": 8 },
+    "duration_seconds": 45,
+    "requirements": [],
+    "effects": [{ "type": "stat_multiplier", "target": "regen_between_waves", "value": 0.05 }]
+  },
+  "hut": {
+    "id": "hut",
+    "name": "Choza",
+    "era": "prehistoric",
+    "cost": { "gold": 220, "science": 12 },
+    "duration_seconds": 60,
+    "requirements": ["campfire"],
+    "effects": [{ "type": "unlock_building", "value": "hut" }]
+  },
+  "stone_tools": {
+    "id": "stone_tools",
+    "name": "Herramientas de piedra",
+    "era": "prehistoric",
+    "cost": { "gold": 300, "science": 14 },
+    "duration_seconds": 80,
+    "requirements": ["hunting", "club_crafting"],
+    "effects": [{ "type": "stat_multiplier", "target": "building_cost", "value": -0.05 }]
+  },
+  "primitive_smelting": {
+    "id": "primitive_smelting",
+    "name": "Fundicion primitiva",
+    "era": "prehistoric",
+    "cost": { "gold": 500, "science": 22 },
+    "duration_seconds": 120,
+    "requirements": ["stone_tools", "hut"],
+    "effects": [{ "type": "unlock_era", "value": "bronze" }]
+  },
+  "bronze_smelting": {
+    "id": "bronze_smelting",
+    "name": "Fundicion de bronce",
+    "era": "bronze",
+    "cost": { "gold": 900, "science": 28 },
+    "duration_seconds": 150,
+    "requirements": ["primitive_smelting"],
+    "effects": [{ "type": "unlock_building", "value": "bronze_forge" }]
+  },
+  "bronze_sword": {
+    "id": "bronze_sword",
+    "name": "Espada de bronce",
+    "era": "bronze",
+    "cost": { "gold": 1100, "science": 30 },
+    "duration_seconds": 180,
+    "requirements": ["bronze_smelting"],
+    "effects": [{ "type": "unlock_item", "value": "bronze_sword" }]
+  },
+  "shield": {
+    "id": "shield",
+    "name": "Escudo",
+    "era": "bronze",
+    "cost": { "gold": 800, "science": 24 },
+    "duration_seconds": 120,
+    "requirements": ["bronze_smelting"],
+    "effects": [{ "type": "stat_multiplier", "target": "armor", "value": 0.08 }]
+  },
+  "archery": {
+    "id": "archery",
+    "name": "Arqueria",
+    "era": "bronze",
+    "cost": { "gold": 1300, "science": 36 },
+    "duration_seconds": 180,
+    "requirements": ["bronze_sword", "shield"],
+    "effects": [{ "type": "unlock_building", "value": "archer_unit" }]
+  },
+  "agriculture": {
+    "id": "agriculture",
+    "name": "Agricultura",
+    "era": "bronze",
+    "cost": { "gold": 1000, "science": 26 },
+    "duration_seconds": 150,
+    "requirements": ["bronze_smelting"],
+    "effects": [{ "type": "stat_multiplier", "target": "gold_per_second", "value": 0.12 }]
+  },
+  "storage": {
+    "id": "storage",
+    "name": "Almacenamiento",
+    "era": "bronze",
+    "cost": { "gold": 1100, "science": 30 },
+    "duration_seconds": 180,
+    "requirements": ["agriculture"],
+    "effects": [{ "type": "stat_multiplier", "target": "offline_time_cap", "value": 0.25 }]
+  },
+  "walls": {
+    "id": "walls",
+    "name": "Murallas",
+    "era": "bronze",
+    "cost": { "gold": 1400, "science": 34 },
+    "duration_seconds": 200,
+    "requirements": ["storage", "shield"],
+    "effects": [{ "type": "unlock_building", "value": "wall" }]
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "prehistoric": {
+    "id": "prehistoric",
+    "name": "Prehistoria",
+    "order": 1,
+    "unlock_cost": { "gold": 0, "science": 0 },
+    "research_time_seconds": 0,
+    "requirements": []
+  },
+  "bronze": {
+    "id": "bronze",
+    "name": "Edad del Bronce",
+    "order": 2,
+    "unlock_cost": { "gold": 8000, "science": 100 },
+    "research_time_seconds": 300,
+    "requirements": ["primitive_smelting"]
+  },
+  "iron": {
+    "id": "iron",
+    "name": "Edad del Hierro",
+    "order": 3,
+    "unlock_cost": { "gold": 20000, "science": 300 },
+    "research_time_seconds": 900,
+    "requirements": ["advanced_metallurgy"]
+  }
+}
