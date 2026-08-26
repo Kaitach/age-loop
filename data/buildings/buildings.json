@@ -1,0 +1,37 @@
+{
+  "housing": {
+    "name": "Vivienda",
+    "max_level": 20,
+    "base_cost": { "gold": 80, "materials": 20 },
+    "cost_growth": 1.35,
+    "per_level": { "max_units": 1 }
+  },
+  "mine": {
+    "name": "Mina",
+    "max_level": 20,
+    "base_cost": { "gold": 120, "materials": 30 },
+    "cost_growth": 1.35,
+    "per_level": { "materials_per_min": 6 }
+  },
+  "market": {
+    "name": "Mercado",
+    "max_level": 20,
+    "base_cost": { "gold": 100, "materials": 20 },
+    "cost_growth": 1.35,
+    "per_level": { "gold_per_min": 48 }
+  },
+  "forge": {
+    "name": "Herreria",
+    "max_level": 15,
+    "base_cost": { "gold": 200, "materials": 50 },
+    "cost_growth": 1.35,
+    "per_level": { "loot_bonus": 0.02 }
+  },
+  "wall": {
+    "name": "Muralla",
+    "max_level": 20,
+    "base_cost": { "gold": 150, "materials": 40 },
+    "cost_growth": 1.35,
+    "per_level": { "base_health_bonus": 30 }
+  }
+}

@@ -93,7 +93,8 @@ func _on_enemy_killed(enemy_id: String) -> void:
 		return
 	if bool(data.get("is_boss", false)):
 		GameState.stats["bosses_killed"] = int(GameState.stats.get("bosses_killed", 0)) + 1
-	var drop := LootManager.roll_drop(float(data.get("loot_chance", 0.0)), GameState.world, GameState.wave, bool(data.get("is_boss", false)))
+	var chance := float(data.get("loot_chance", 0.0)) + BuildingManager.get_bonus("loot_bonus")
+	var drop := LootManager.roll_drop(chance, GameState.world, GameState.wave, bool(data.get("is_boss", false)))
 	if drop.is_empty():
 		return
 	if InventoryManager.add_item(drop) == "stored":

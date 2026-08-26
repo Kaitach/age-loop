@@ -7,7 +7,11 @@ const HEIGHT := 150.0
 @export var base_max_health: int = 300
 
 func _ready() -> void:
-	max_health = base_max_health + Upgrades.bonus_value("base_health")
+	var wall_bonus := 0
+	var bm := Engine.get_main_loop() as SceneTree
+	if bm != null and bm.root.has_node("/root/BuildingManager"):
+		wall_bonus = int(bm.root.get_node("/root/BuildingManager").get_bonus("base_health_bonus"))
+	max_health = base_max_health + Upgrades.bonus_value("base_health") + wall_bonus
 	super()
 	add_to_group("base_fort")
 
