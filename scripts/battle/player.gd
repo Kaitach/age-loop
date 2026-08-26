@@ -10,13 +10,19 @@ const BODY_RADIUS := 46.0
 @export var projectile_speed: float = 720.0
 
 var damage: int = 14
+var critical_chance: float = 0.05
+var critical_damage: float = 1.5
 
 var _attack_cooldown: float = 0.6
 var _dying: bool = false
 
 func _ready() -> void:
-	damage = base_damage + Upgrades.bonus_value("player_damage")
-	max_health = base_max_health + Upgrades.bonus_value("player_health")
+	var final_stats := StatsCalculator.player_final_stats(self)
+	damage = int(round(float(final_stats["damage"])))
+	max_health = int(round(float(final_stats["max_health"])))
+	attack_speed = float(final_stats["attack_speed"])
+	critical_chance = float(final_stats["critical_chance"])
+	critical_damage = float(final_stats["critical_damage"])
 	super()
 	add_to_group("player")
 
@@ -47,7 +53,10 @@ func _nearest_enemy() -> Enemy:
 
 func _shoot(target: Enemy) -> void:
 	var projectile := Projectile.new()
-	projectile.setup(global_position + Vector2(0, -34), target, damage, projectile_speed)
+	var hit_damage := damage
+	if randf() < critical_chance:
+		hit_damage = int(round(damage * critical_damage))
+	projectile.setup(global_position + Vector2(0, -34), target, hit_damage, projectile_speed)
 	get_parent().add_child(projectile)
 
 func _on_death() -> void:

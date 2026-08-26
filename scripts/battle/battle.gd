@@ -8,6 +8,8 @@ const MAX_WAVE := 10
 var state: State = State.FIGHTING
 var _upgrade_rows: Dictionary = {}
 var _upgrades_built := false
+var _wave_drops: Array = []
+var _current_drop: Dictionary = {}
 
 @onready var player: Player = $World/Player
 @onready var base_building: BaseBuilding = $World/Base
@@ -25,6 +27,12 @@ var _upgrades_built := false
 @onready var upgrades_panel: CenterContainer = %UpgradesPanel
 @onready var upgrades_list: VBoxContainer = %UpgradesList
 @onready var close_upgrades_button: Button = %CloseUpgradesButton
+@onready var item_card: VBoxContainer = %ItemCard
+@onready var item_title: Label = %ItemTitle
+@onready var item_stats: Label = %ItemStats
+@onready var item_compare: Label = %ItemCompare
+@onready var item_equip_button: Button = %ItemEquipButton
+@onready var item_sell_button: Button = %ItemSellButton
 
 var wave_manager := WaveManager.new()
 
@@ -45,6 +53,10 @@ func _ready() -> void:
 	menu_button.pressed.connect(_on_menu_pressed)
 	upgrades_button.pressed.connect(_open_upgrades)
 	close_upgrades_button.pressed.connect(func() -> void: upgrades_panel.visible = false)
+	item_equip_button.pressed.connect(_on_drop_equipped)
+	item_sell_button.pressed.connect(_on_drop_sold)
+	_wave_drops.clear()
+	_current_drop = {}
 	SignalBus.currency_changed.connect(_refresh_currency)
 	_refresh_currency()
 
@@ -69,8 +81,16 @@ func _on_spawn_enemy(enemy_id: String, position_p: Vector2) -> void:
 
 func _on_enemy_killed(enemy_id: String) -> void:
 	GameState.stats["enemies_killed"] = int(GameState.stats.get("enemies_killed", 0)) + 1
-	if WaveManager.get_enemy_data(enemy_id).get("is_boss", false):
+	var data := WaveManager.get_enemy_data(enemy_id)
+	if data.is_empty():
+		return
+	if bool(data.get("is_boss", false)):
 		GameState.stats["bosses_killed"] = int(GameState.stats.get("bosses_killed", 0)) + 1
+	var drop := LootManager.roll_drop(float(data.get("loot_chance", 0.0)), GameState.world, GameState.wave, bool(data.get("is_boss", false)))
+	if drop.is_empty():
+		return
+	if InventoryManager.add_item(drop) == "stored":
+		_wave_drops.append(drop)
 
 func is_over() -> bool:
 	return state != State.FIGHTING
@@ -90,7 +110,67 @@ func _victory() -> void:
 		GameState.wave += 1
 	GameState.stats["waves_completed"] = int(GameState.stats.get("waves_completed", 0)) + 1
 	SignalBus.save_requested.emit()
+	_show_drop_card()
 	_end_battle(true)
+
+func _show_drop_card() -> void:
+	if _wave_drops.is_empty():
+		item_card.visible = false
+		return
+	var best: Dictionary = _wave_drops[0]
+	for drop in _wave_drops:
+		if LootManager.item_power(drop) > LootManager.item_power(best):
+			best = drop
+	_current_drop = best
+	item_title.text = "%s — %s Nv.%d" % [best.get("name", "?"), LootManager.get_rarity_name(String(best.get("rarity", ""))), int(best.get("level", 1))]
+	item_title.add_theme_color_override("font_color", LootManager.get_rarity_color(String(best.get("rarity", ""))))
+	var lines: PackedStringArray = []
+	for stat_key in StatsCalculator.item_total_stats(best).keys():
+		lines.append(StatsCalculator.format_stat_line(stat_key, float(StatsCalculator.item_total_stats(best)[stat_key])))
+	item_stats.text = "\n".join(lines)
+	item_compare.text = _build_compare_text(String(best.get("slot", "")))
+	item_card.visible = true
+
+func _build_compare_text(slot: String) -> String:
+	var current = GameState.equipped_items.get(slot, null)
+	if current == null or not (current is Dictionary):
+		return "(Slot vacio)"
+	var old_totals := StatsCalculator.item_total_stats(current)
+	var new_totals := StatsCalculator.item_total_stats(_current_drop)
+	var lines: PackedStringArray = []
+	for stat_key in new_totals.keys():
+		var diff := float(new_totals[stat_key]) - float(old_totals.get(stat_key, 0.0))
+		if absf(diff) < 0.0005:
+			continue
+		if stat_key == "attack_speed" or stat_key == "critical_chance":
+			lines.append("%+.1f%% %s" % [diff * 100.0, StatsCalculator.format_stat_line(stat_key, 0.0).split(" ")[0]])
+		elif stat_key == "damage":
+			lines.append("%+d Daño" % int(round(diff)))
+		elif stat_key == "max_health":
+			lines.append("%+d Vida" % int(round(diff)))
+		else:
+			lines.append("%+.0f%% %s" % [diff * 100.0, "Daño critico" if stat_key == "critical_damage" else stat_key])
+	if lines.is_empty():
+		return "(Sin cambios respecto al actual)"
+	return "vs equipado:  " + "   ".join(lines)
+
+func _on_drop_equipped() -> void:
+	if _current_drop.is_empty():
+		return
+	InventoryManager.equip_item(String(_current_drop["id"]))
+	result_sub.text += "   [Equipado]"
+	_hide_drop_card()
+
+func _on_drop_sold() -> void:
+	if _current_drop.is_empty():
+		return
+	InventoryManager.sell_item(String(_current_drop["id"]))
+	result_sub.text += "   [+%d oro]" % int(_current_drop.get("sell_value", 0))
+	_hide_drop_card()
+
+func _hide_drop_card() -> void:
+	_current_drop = {}
+	item_card.visible = false
 
 func _end_battle(victory: bool) -> void:
 	if state == State.WON or state == State.LOST:

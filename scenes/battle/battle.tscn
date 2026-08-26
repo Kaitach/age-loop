@@ -181,6 +181,63 @@ theme_override_font_sizes/font_size = 40
 text = "La oleada fue repelida."
 horizontal_alignment = 1
 
+[node name="ItemCard" type="VBoxContainer" parent="UI/ResultPanel/Panel/VBox"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="ItemTitle" type="Label" parent="UI/ResultPanel/Panel/VBox/ItemCard"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 52
+text = "OBJETO OBTENIDO"
+horizontal_alignment = 1
+
+[node name="ItemStats" type="Label" parent="UI/ResultPanel/Panel/VBox/ItemCard"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.9, 1, 1)
+theme_override_font_sizes/font_size = 34
+text = ""
+horizontal_alignment = 1
+
+[node name="ItemCompare" type="Label" parent="UI/ResultPanel/Panel/VBox/ItemCard"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.62, 0.68, 0.8, 1)
+theme_override_font_sizes/font_size = 30
+text = ""
+horizontal_alignment = 1
+
+[node name="ItemButtons" type="HBoxContainer" parent="UI/ResultPanel/Panel/VBox/ItemCard"]
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="ItemEquipButton" type="Button" parent="UI/ResultPanel/Panel/VBox/ItemCard/ItemButtons"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(280, 110)
+layout_mode = 2
+theme_override_font_sizes/font_size = 42
+theme_override_styles/normal = SubResource("btn_normal")
+theme_override_styles/hover = SubResource("btn_hover")
+theme_override_styles/pressed = SubResource("btn_pressed")
+theme_override_styles/focus = SubResource("btn_hover")
+text = "EQUIPAR"
+
+[node name="ItemSellButton" type="Button" parent="UI/ResultPanel/Panel/VBox/ItemCard/ItemButtons"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(260, 110)
+layout_mode = 2
+theme_override_font_sizes/font_size = 42
+theme_override_styles/normal = SubResource("btn_normal")
+theme_override_styles/hover = SubResource("btn_hover")
+theme_override_styles/pressed = SubResource("btn_pressed")
+theme_override_styles/focus = SubResource("btn_hover")
+text = "VENDER"
+
+
 [node name="Buttons" type="HBoxContainer" parent="UI/ResultPanel/Panel/VBox"]
 layout_mode = 2
 theme_override_constants/separation = 24

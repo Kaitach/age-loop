@@ -1,0 +1,60 @@
+{
+  "templates": {
+    "stone_club": {
+      "name": "Garrote de piedra",
+      "slot": "weapon",
+      "era": "prehistoric",
+      "base_stats": { "damage": 10 },
+      "allowed_modifiers": ["damage", "attack_speed", "critical_chance"]
+    },
+    "stone_spear": {
+      "name": "Lanza de piedra",
+      "slot": "weapon",
+      "era": "prehistoric",
+      "base_stats": { "damage": 15 },
+      "allowed_modifiers": ["damage", "critical_chance", "critical_damage"]
+    },
+    "hide_cap": {
+      "name": "Gorro de piel",
+      "slot": "helmet",
+      "era": "prehistoric",
+      "base_stats": { "max_health": 16 },
+      "allowed_modifiers": ["max_health"]
+    },
+    "hide_armor": {
+      "name": "Armadura de piel",
+      "slot": "armor",
+      "era": "prehistoric",
+      "base_stats": { "max_health": 28 },
+      "allowed_modifiers": ["max_health", "critical_damage"]
+    },
+    "hide_boots": {
+      "name": "Botas de piel",
+      "slot": "boots",
+      "era": "prehistoric",
+      "base_stats": { "attack_speed": 0.04 },
+      "allowed_modifiers": ["attack_speed", "max_health"]
+    },
+    "bone_gloves": {
+      "name": "Guantes de hueso",
+      "slot": "gloves",
+      "era": "prehistoric",
+      "base_stats": { "critical_chance": 0.015 },
+      "allowed_modifiers": ["critical_chance"]
+    },
+    "bone_amulet": {
+      "name": "Amuleto de hueso",
+      "slot": "amulet",
+      "era": "prehistoric",
+      "base_stats": { "critical_chance": 0.02 },
+      "allowed_modifiers": ["critical_chance", "critical_damage"]
+    }
+  },
+  "modifier_ranges": {
+    "damage": [2, 4],
+    "attack_speed": [0.01, 0.03],
+    "critical_chance": [0.006, 0.018],
+    "critical_damage": [0.02, 0.07],
+    "max_health": [5, 12]
+  }
+}
