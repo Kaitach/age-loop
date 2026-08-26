@@ -1,0 +1,140 @@
+{
+  "world": 2,
+  "waves": [
+    {
+      "wave": 1,
+      "groups": [
+        {
+          "enemy": "ranged",
+          "count": 4
+        }
+      ]
+    },
+    {
+      "wave": 2,
+      "groups": [
+        {
+          "enemy": "normal",
+          "count": 5
+        },
+        {
+          "enemy": "ranged",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "wave": 3,
+      "groups": [
+        {
+          "enemy": "berserker",
+          "count": 3
+        },
+        {
+          "enemy": "fast",
+          "count": 3
+        }
+      ]
+    },
+    {
+      "wave": 4,
+      "groups": [
+        {
+          "enemy": "elite",
+          "count": 2
+        },
+        {
+          "enemy": "ranged",
+          "count": 3
+        }
+      ]
+    },
+    {
+      "wave": 5,
+      "groups": [
+        {
+          "enemy": "tank",
+          "count": 2
+        },
+        {
+          "enemy": "berserker",
+          "count": 3
+        }
+      ]
+    },
+    {
+      "wave": 6,
+      "groups": [
+        {
+          "enemy": "elite",
+          "count": 3
+        },
+        {
+          "enemy": "ranged",
+          "count": 4
+        }
+      ]
+    },
+    {
+      "wave": 7,
+      "groups": [
+        {
+          "enemy": "berserker",
+          "count": 4
+        },
+        {
+          "enemy": "ranged",
+          "count": 3
+        },
+        {
+          "enemy": "elite",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "wave": 8,
+      "groups": [
+        {
+          "enemy": "tank",
+          "count": 3
+        },
+        {
+          "enemy": "elite",
+          "count": 3
+        }
+      ]
+    },
+    {
+      "wave": 9,
+      "groups": [
+        {
+          "enemy": "berserker",
+          "count": 4
+        },
+        {
+          "enemy": "elite",
+          "count": 3
+        },
+        {
+          "enemy": "ranged",
+          "count": 3
+        }
+      ]
+    },
+    {
+      "wave": 10,
+      "boss": "boss_chief",
+      "groups": [
+        {
+          "enemy": "elite",
+          "count": 3
+        },
+        {
+          "enemy": "ranged",
+          "count": 2
+        }
+      ]
+    }
+  ]
+}

@@ -133,6 +133,18 @@
         "max_health",
         "critical_damage"
       ]
+    },
+    "chieftain_cloak": {
+      "name": "Capa del jefe",
+      "slot": "armor",
+      "era": "iron",
+      "base_stats": {
+        "max_health": 72
+      },
+      "allowed_modifiers": [
+        "max_health",
+        "critical_damage"
+      ]
     }
   },
   "modifier_ranges": {

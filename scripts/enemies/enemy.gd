@@ -20,6 +20,8 @@ var reward_materials := 0
 var _target: Combatant
 var _attack_cooldown: float = 0.0
 var _dying: bool = false
+var _summon_cd: float = 7.0
+var _enraged: bool = false
 
 func setup_from_data(enemy_id_p: String, data: Dictionary, hp_scale: float, dmg_scale: float) -> void:
 	enemy_id = enemy_id_p
@@ -44,18 +46,44 @@ func _process(delta: float) -> void:
 	super(delta)
 	if _dying:
 		return
+	if enemy_id == "boss_chief" and is_boss:
+		_summon_cd -= delta
+		if _summon_cd <= 0.0:
+			_summon_cd = 8.0
+			_spawn_minions()
+	if enemy_id == "berserker" and health < max_health * 0.4 and not _enraged:
+		_enraged = true
+		movement_speed *= 1.7
+		attack_speed *= 1.3
+		modulate = Color(1.2, 0.5, 0.5)
+	if enemy_id == "boss_iron_general" and health < max_health * 0.5 and not _enraged:
+		_enraged = true
+		attack_speed *= 1.6
+		body_color = body_color.darkened(0.15)
+		queue_redraw()
 	_acquire_target()
 	if _target == null or not is_instance_valid(_target) or not _target.is_alive():
 		return
 	var dist := global_position.distance_to(_target.global_position)
+	var eff_speed := movement_speed
 	if dist > attack_range:
-		global_position += (_target.global_position - global_position).normalized() * movement_speed * delta
+		global_position += (_target.global_position - global_position).normalized() * eff_speed * delta
 	else:
 		_attack_cooldown -= delta
 		if _attack_cooldown <= 0.0:
 			_attack_cooldown = 1.0 / attack_speed
 			_target.take_damage(damage)
 			queue_redraw()
+
+func _spawn_minions() -> void:
+	var parent_node := get_parent()
+	if parent_node == null:
+		return
+	for i in range(2):
+		var m := Enemy.new()
+		m.setup_from_data("fast", WaveManager.get_enemy_data("fast"), 1.0, 1.0)
+		m.position = position + Vector2(randf_range(-80, 80), randf_range(-40, 40))
+		parent_node.add_child(m)
 
 func _acquire_target() -> void:
 	var player := get_tree().get_first_node_in_group("player") as Combatant

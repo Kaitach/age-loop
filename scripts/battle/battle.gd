@@ -4,6 +4,7 @@ enum State { FIGHTING, WON, LOST }
 
 const MENU_SCENE := "res://scenes/menu/main_menu.tscn"
 const MAX_WAVE := 10
+const MAX_WORLD := 3
 
 var state: State = State.FIGHTING
 var _upgrade_rows: Dictionary = {}
@@ -14,6 +15,7 @@ var _current_drop: Dictionary = {}
 @onready var player: Player = $World/Player
 @onready var base_building: BaseBuilding = $World/Base
 @onready var enemies_container: Node2D = $World/Enemies
+@onready var units_container: Node2D = $World/Units
 @onready var wave_label: Label = %WaveLabel
 @onready var currency_label: Label = %CurrencyLabel
 @onready var player_bar: ProgressBar = %PlayerBar
@@ -65,6 +67,7 @@ func _ready() -> void:
 	SignalBus.currency_changed.connect(_refresh_currency)
 	SignalBus.era_changed.connect(_on_era_changed)
 	_apply_era_visual(GameState.current_era)
+	_spawn_allies()
 	_refresh_currency()
 
 func _process(delta: float) -> void:
@@ -106,16 +109,23 @@ func is_over() -> bool:
 func did_win() -> bool:
 	return state == State.WON
 
+func _advance_progression() -> void:
+	if GameState.wave >= MAX_WAVE:
+		if GameState.world < MAX_WORLD:
+			GameState.world += 1
+			GameState.wave = 1
+		else:
+			GameState.wave = MAX_WAVE
+	else:
+		GameState.wave += 1
+
 func _victory() -> void:
 	var rewards := WaveManager.calculate_rewards(GameState.world, GameState.wave)
 	Economy.add_gold(int(rewards["gold"]))
 	Economy.add_science(int(rewards["science"]))
 	Economy.add_materials(int(rewards["materials"]))
 	result_sub.text = "+%d oro   +%d ciencia   +%d materiales" % [rewards["gold"], rewards["science"], rewards["materials"]]
-	if GameState.wave >= MAX_WAVE:
-		GameState.wave = MAX_WAVE
-	else:
-		GameState.wave += 1
+	_advance_progression()
 	GameState.stats["waves_completed"] = int(GameState.stats.get("waves_completed", 0)) + 1
 	SignalBus.save_requested.emit()
 	_show_drop_card()
@@ -180,6 +190,15 @@ func _hide_drop_card() -> void:
 	_current_drop = {}
 	item_card.visible = false
 
+func _spawn_allies() -> void:
+	var count := clampi(1 + BuildingManager.get_level("housing"), 1, 3)
+	var types := ["archer", "heavy", "crossbow"]
+	for i in range(count):
+		var u := AllyUnit.new()
+		u.setup(types[i % types.size()])
+		u.position = Vector2(380 + i * 160, 1380)
+		units_container.add_child(u)
+
 func _end_battle(victory: bool) -> void:
 	if state == State.WON or state == State.LOST:
 		return
@@ -187,6 +206,8 @@ func _end_battle(victory: bool) -> void:
 	for node in get_tree().get_nodes_in_group("enemies"):
 		node.set_process(false)
 	for node in get_tree().get_nodes_in_group("projectiles"):
+		node.set_process(false)
+	for node in get_tree().get_nodes_in_group("allies"):
 		node.set_process(false)
 	player.set_process(false)
 	base_building.set_process(false)
