@@ -64,7 +64,13 @@ func _on_spawn_enemy(enemy_id: String, position_p: Vector2) -> void:
 		WaveManager.dmg_scale_for(GameState.world, GameState.wave)
 	)
 	enemy.position = position_p
+	enemy.died.connect(_on_enemy_killed.bind(enemy_id))
 	enemies_container.add_child(enemy)
+
+func _on_enemy_killed(enemy_id: String) -> void:
+	GameState.stats["enemies_killed"] = int(GameState.stats.get("enemies_killed", 0)) + 1
+	if WaveManager.get_enemy_data(enemy_id).get("is_boss", false):
+		GameState.stats["bosses_killed"] = int(GameState.stats.get("bosses_killed", 0)) + 1
 
 func is_over() -> bool:
 	return state != State.FIGHTING
@@ -82,6 +88,8 @@ func _victory() -> void:
 		GameState.wave = MAX_WAVE
 	else:
 		GameState.wave += 1
+	GameState.stats["waves_completed"] = int(GameState.stats.get("waves_completed", 0)) + 1
+	SignalBus.save_requested.emit()
 	_end_battle(true)
 
 func _end_battle(victory: bool) -> void:
@@ -130,6 +138,7 @@ func _on_upgrade_pressed(upgrade_id: String) -> void:
 	if Upgrades.try_buy(upgrade_id):
 		_refresh_currency()
 		_refresh_upgrade_rows()
+		SignalBus.save_requested.emit()
 
 func _refresh_upgrade_rows() -> void:
 	for upgrade_id in _upgrade_rows.keys():

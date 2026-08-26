@@ -17,3 +17,11 @@ var technologies: Dictionary = {}
 var upgrades: Dictionary = {}
 
 var current_research = null
+
+var stats: Dictionary = {
+	"enemies_killed": 0,
+	"bosses_killed": 0,
+	"waves_completed": 0,
+}
+
+var last_played_at: int = 0
