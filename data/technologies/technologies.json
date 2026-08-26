@@ -3,135 +3,444 @@
     "id": "gathering",
     "name": "Recoleccion",
     "era": "prehistoric",
-    "cost": { "gold": 120, "science": 6 },
+    "cost": {
+      "gold": 120,
+      "science": 6
+    },
     "duration_seconds": 30,
     "requirements": [],
-    "effects": [{ "type": "stat_multiplier", "target": "gold_reward", "value": 0.1 }]
+    "effects": [
+      {
+        "type": "stat_multiplier",
+        "target": "gold_reward",
+        "value": 0.1
+      }
+    ]
   },
   "hunting": {
     "id": "hunting",
     "name": "Caza",
     "era": "prehistoric",
-    "cost": { "gold": 150, "science": 8 },
+    "cost": {
+      "gold": 150,
+      "science": 8
+    },
     "duration_seconds": 40,
     "requirements": [],
-    "effects": [{ "type": "stat_multiplier", "target": "loot_bonus", "value": 0.1 }]
+    "effects": [
+      {
+        "type": "stat_multiplier",
+        "target": "loot_bonus",
+        "value": 0.1
+      }
+    ]
   },
   "club_crafting": {
     "id": "club_crafting",
     "name": "Garrote",
     "era": "prehistoric",
-    "cost": { "gold": 100, "science": 5 },
+    "cost": {
+      "gold": 100,
+      "science": 5
+    },
     "duration_seconds": 30,
     "requirements": [],
-    "effects": [{ "type": "unlock_item", "value": "stone_club" }]
+    "effects": [
+      {
+        "type": "unlock_item",
+        "value": "stone_club"
+      }
+    ]
   },
   "spear_crafting": {
     "id": "spear_crafting",
     "name": "Lanza",
     "era": "prehistoric",
-    "cost": { "gold": 200, "science": 10 },
+    "cost": {
+      "gold": 200,
+      "science": 10
+    },
     "duration_seconds": 50,
-    "requirements": ["club_crafting"],
-    "effects": [{ "type": "unlock_item", "value": "stone_spear" }]
+    "requirements": [
+      "club_crafting"
+    ],
+    "effects": [
+      {
+        "type": "unlock_item",
+        "value": "stone_spear"
+      }
+    ]
   },
   "campfire": {
     "id": "campfire",
     "name": "Fogata",
     "era": "prehistoric",
-    "cost": { "gold": 180, "science": 8 },
+    "cost": {
+      "gold": 180,
+      "science": 8
+    },
     "duration_seconds": 45,
     "requirements": [],
-    "effects": [{ "type": "stat_multiplier", "target": "regen_between_waves", "value": 0.05 }]
+    "effects": [
+      {
+        "type": "stat_multiplier",
+        "target": "regen_between_waves",
+        "value": 0.05
+      }
+    ]
   },
   "hut": {
     "id": "hut",
     "name": "Choza",
     "era": "prehistoric",
-    "cost": { "gold": 220, "science": 12 },
+    "cost": {
+      "gold": 220,
+      "science": 12
+    },
     "duration_seconds": 60,
-    "requirements": ["campfire"],
-    "effects": [{ "type": "unlock_building", "value": "hut" }]
+    "requirements": [
+      "campfire"
+    ],
+    "effects": [
+      {
+        "type": "unlock_building",
+        "value": "hut"
+      }
+    ]
   },
   "stone_tools": {
     "id": "stone_tools",
     "name": "Herramientas de piedra",
     "era": "prehistoric",
-    "cost": { "gold": 300, "science": 14 },
+    "cost": {
+      "gold": 300,
+      "science": 14
+    },
     "duration_seconds": 80,
-    "requirements": ["hunting", "club_crafting"],
-    "effects": [{ "type": "stat_multiplier", "target": "building_cost", "value": -0.05 }]
+    "requirements": [
+      "hunting",
+      "club_crafting"
+    ],
+    "effects": [
+      {
+        "type": "stat_multiplier",
+        "target": "building_cost",
+        "value": -0.05
+      }
+    ]
   },
   "primitive_smelting": {
     "id": "primitive_smelting",
     "name": "Fundicion primitiva",
     "era": "prehistoric",
-    "cost": { "gold": 500, "science": 22 },
+    "cost": {
+      "gold": 500,
+      "science": 22
+    },
     "duration_seconds": 120,
-    "requirements": ["stone_tools", "hut"],
-    "effects": [{ "type": "unlock_era", "value": "bronze" }]
+    "requirements": [
+      "stone_tools",
+      "hut"
+    ],
+    "effects": [
+      {
+        "type": "unlock_era",
+        "value": "bronze"
+      }
+    ]
   },
   "bronze_smelting": {
     "id": "bronze_smelting",
     "name": "Fundicion de bronce",
     "era": "bronze",
-    "cost": { "gold": 900, "science": 28 },
+    "cost": {
+      "gold": 900,
+      "science": 28
+    },
     "duration_seconds": 150,
-    "requirements": ["primitive_smelting"],
-    "effects": [{ "type": "unlock_building", "value": "bronze_forge" }]
+    "requirements": [
+      "primitive_smelting"
+    ],
+    "effects": [
+      {
+        "type": "unlock_building",
+        "value": "bronze_forge"
+      }
+    ]
   },
   "bronze_sword": {
     "id": "bronze_sword",
     "name": "Espada de bronce",
     "era": "bronze",
-    "cost": { "gold": 1100, "science": 30 },
+    "cost": {
+      "gold": 1100,
+      "science": 30
+    },
     "duration_seconds": 180,
-    "requirements": ["bronze_smelting"],
-    "effects": [{ "type": "unlock_item", "value": "bronze_sword" }]
+    "requirements": [
+      "bronze_smelting"
+    ],
+    "effects": [
+      {
+        "type": "unlock_item",
+        "value": "bronze_sword"
+      }
+    ]
   },
   "shield": {
     "id": "shield",
     "name": "Escudo",
     "era": "bronze",
-    "cost": { "gold": 800, "science": 24 },
+    "cost": {
+      "gold": 800,
+      "science": 24
+    },
     "duration_seconds": 120,
-    "requirements": ["bronze_smelting"],
-    "effects": [{ "type": "stat_multiplier", "target": "armor", "value": 0.08 }]
+    "requirements": [
+      "bronze_smelting"
+    ],
+    "effects": [
+      {
+        "type": "stat_multiplier",
+        "target": "armor",
+        "value": 0.08
+      }
+    ]
   },
   "archery": {
     "id": "archery",
     "name": "Arqueria",
     "era": "bronze",
-    "cost": { "gold": 1300, "science": 36 },
+    "cost": {
+      "gold": 1300,
+      "science": 36
+    },
     "duration_seconds": 180,
-    "requirements": ["bronze_sword", "shield"],
-    "effects": [{ "type": "unlock_building", "value": "archer_unit" }]
+    "requirements": [
+      "bronze_sword",
+      "shield"
+    ],
+    "effects": [
+      {
+        "type": "unlock_building",
+        "value": "archer_unit"
+      }
+    ]
   },
   "agriculture": {
     "id": "agriculture",
     "name": "Agricultura",
     "era": "bronze",
-    "cost": { "gold": 1000, "science": 26 },
+    "cost": {
+      "gold": 1000,
+      "science": 26
+    },
     "duration_seconds": 150,
-    "requirements": ["bronze_smelting"],
-    "effects": [{ "type": "stat_multiplier", "target": "gold_per_second", "value": 0.12 }]
+    "requirements": [
+      "bronze_smelting"
+    ],
+    "effects": [
+      {
+        "type": "stat_multiplier",
+        "target": "gold_per_second",
+        "value": 0.12
+      }
+    ]
   },
   "storage": {
     "id": "storage",
     "name": "Almacenamiento",
     "era": "bronze",
-    "cost": { "gold": 1100, "science": 30 },
+    "cost": {
+      "gold": 1100,
+      "science": 30
+    },
     "duration_seconds": 180,
-    "requirements": ["agriculture"],
-    "effects": [{ "type": "stat_multiplier", "target": "offline_time_cap", "value": 0.25 }]
+    "requirements": [
+      "agriculture"
+    ],
+    "effects": [
+      {
+        "type": "stat_multiplier",
+        "target": "offline_time_cap",
+        "value": 0.25
+      }
+    ]
   },
   "walls": {
     "id": "walls",
     "name": "Murallas",
     "era": "bronze",
-    "cost": { "gold": 1400, "science": 34 },
+    "cost": {
+      "gold": 1400,
+      "science": 34
+    },
     "duration_seconds": 200,
-    "requirements": ["storage", "shield"],
-    "effects": [{ "type": "unlock_building", "value": "wall" }]
+    "requirements": [
+      "storage",
+      "shield"
+    ],
+    "effects": [
+      {
+        "type": "unlock_building",
+        "value": "wall"
+      }
+    ]
+  },
+  "iron_forging": {
+    "id": "iron_forging",
+    "name": "Forja de hierro",
+    "era": "iron",
+    "cost": {
+      "gold": 1800,
+      "science": 44
+    },
+    "duration_seconds": 240,
+    "requirements": [
+      "walls"
+    ],
+    "effects": [
+      {
+        "type": "unlock_building",
+        "value": "iron_forge"
+      }
+    ]
+  },
+  "iron_sword": {
+    "id": "iron_sword",
+    "name": "Espada de hierro",
+    "era": "iron",
+    "cost": {
+      "gold": 2200,
+      "science": 52
+    },
+    "duration_seconds": 260,
+    "requirements": [
+      "iron_forging"
+    ],
+    "effects": [
+      {
+        "type": "unlock_item",
+        "value": "iron_sword"
+      }
+    ]
+  },
+  "heavy_armor": {
+    "id": "heavy_armor",
+    "name": "Armadura pesada",
+    "era": "iron",
+    "cost": {
+      "gold": 2000,
+      "science": 48
+    },
+    "duration_seconds": 240,
+    "requirements": [
+      "iron_forging"
+    ],
+    "effects": [
+      {
+        "type": "unlock_item",
+        "value": "iron_armor"
+      }
+    ]
+  },
+  "crossbow": {
+    "id": "crossbow",
+    "name": "Ballesta",
+    "era": "iron",
+    "cost": {
+      "gold": 2400,
+      "science": 56
+    },
+    "duration_seconds": 280,
+    "requirements": [
+      "heavy_armor"
+    ],
+    "effects": [
+      {
+        "type": "unlock_building",
+        "value": "crossbow_unit"
+      }
+    ]
+  },
+  "military_formation": {
+    "id": "military_formation",
+    "name": "Formacion militar",
+    "era": "iron",
+    "cost": {
+      "gold": 2600,
+      "science": 60
+    },
+    "duration_seconds": 300,
+    "requirements": [
+      "crossbow"
+    ],
+    "effects": [
+      {
+        "type": "stat_multiplier",
+        "target": "max_units",
+        "value": 1
+      }
+    ]
+  },
+  "trade": {
+    "id": "trade",
+    "name": "Comercio",
+    "era": "iron",
+    "cost": {
+      "gold": 2000,
+      "science": 46
+    },
+    "duration_seconds": 220,
+    "requirements": [
+      "iron_forging"
+    ],
+    "effects": [
+      {
+        "type": "stat_multiplier",
+        "target": "gold_reward",
+        "value": 0.15
+      }
+    ]
+  },
+  "deep_mine": {
+    "id": "deep_mine",
+    "name": "Mina profunda",
+    "era": "iron",
+    "cost": {
+      "gold": 2300,
+      "science": 50
+    },
+    "duration_seconds": 260,
+    "requirements": [
+      "trade"
+    ],
+    "effects": [
+      {
+        "type": "stat_multiplier",
+        "target": "materials_per_minute",
+        "value": 0.2
+      }
+    ]
+  },
+  "engineering": {
+    "id": "engineering",
+    "name": "Ingenieria",
+    "era": "iron",
+    "cost": {
+      "gold": 3000,
+      "science": 70
+    },
+    "duration_seconds": 360,
+    "requirements": [
+      "military_formation",
+      "deep_mine"
+    ],
+    "effects": [
+      {
+        "type": "unlock_era",
+        "value": "medieval"
+      }
+    ]
   }
 }

@@ -33,6 +33,11 @@ var _current_drop: Dictionary = {}
 @onready var item_compare: Label = %ItemCompare
 @onready var item_equip_button: Button = %ItemEquipButton
 @onready var item_sell_button: Button = %ItemSellButton
+@onready var bg_rect: ColorRect = $Background
+@onready var ground_rect: ColorRect = $GroundStrip
+@onready var era_banner: CenterContainer = %EraBanner
+@onready var era_banner_title: Label = %EraBannerTitle
+@onready var era_banner_name: Label = %EraBannerName
 
 var wave_manager := WaveManager.new()
 
@@ -58,6 +63,8 @@ func _ready() -> void:
 	_wave_drops.clear()
 	_current_drop = {}
 	SignalBus.currency_changed.connect(_refresh_currency)
+	SignalBus.era_changed.connect(_on_era_changed)
+	_apply_era_visual(GameState.current_era)
 	_refresh_currency()
 
 func _process(delta: float) -> void:
@@ -189,6 +196,36 @@ func _end_battle(victory: bool) -> void:
 
 func _refresh_currency() -> void:
 	currency_label.text = "ORO %d    CIENCIA %d    MAT %d" % [GameState.gold, GameState.science, GameState.materials]
+
+func _apply_era_visual(era_id: String) -> void:
+	match era_id:
+		"prehistoric":
+			bg_rect.color = Color(0.051, 0.071, 0.122)
+			ground_rect.color = Color(0.086, 0.11, 0.165)
+		"bronze":
+			bg_rect.color = Color(0.14, 0.12, 0.09)
+			ground_rect.color = Color(0.22, 0.18, 0.14)
+		"iron":
+			bg_rect.color = Color(0.1, 0.12, 0.13)
+			ground_rect.color = Color(0.16, 0.17, 0.18)
+		_:
+			bg_rect.color = Color(0.08, 0.09, 0.12)
+			ground_rect.color = Color(0.12, 0.13, 0.15)
+	wave_label.text = "OLEADA %d-%d · %s" % [GameState.world, GameState.wave, String(DataLoader.load_json("eras/eras.json").get(era_id, {}).get("name", era_id)).to_upper()]
+
+func _on_era_changed(era_id: String) -> void:
+	_apply_era_visual(era_id)
+	var era_name: String = String(DataLoader.load_json("eras/eras.json").get(era_id, {}).get("name", era_id))
+	era_banner_name.text = era_name.to_upper()
+	era_banner.visible = true
+	era_banner.modulate.a = 0.0
+	era_banner.scale = Vector2(0.7, 0.7)
+	var tw := create_tween()
+	tw.tween_property(era_banner, "modulate:a", 1.0, 0.35)
+	tw.parallel().tween_property(era_banner, "scale", Vector2(1.0, 1.0), 0.4).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	tw.tween_interval(2.0)
+	tw.tween_property(era_banner, "modulate:a", 0.0, 0.5)
+	tw.tween_callback(func() -> void: era_banner.visible = false)
 
 func _open_upgrades() -> void:
 	if not _upgrades_built:

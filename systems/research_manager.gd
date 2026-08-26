@@ -40,6 +40,12 @@ func can_start(technology_id: String) -> Dictionary:
 	for req_id in tech.get("requirements", []):
 		if not is_completed(String(req_id)):
 			return { "ok": false, "reason": "Falta requisito: %s" % req_id }
+	var tech_era := String(tech.get("era", "prehistoric"))
+	var current_order := _era_order(GameState.current_era)
+	var tech_order := _era_order(tech_era)
+	if tech_order > current_order:
+		var era_name := String(DataLoader.load_json("eras/eras.json").get(tech_era, {}).get("name", tech_era))
+		return { "ok": false, "reason": "Requiere era: %s" % era_name }
 	var cost: Dictionary = tech.get("cost", {})
 	if not Economy.can_afford(cost):
 		return { "ok": false, "reason": "Recursos insuficientes" }
@@ -93,3 +99,6 @@ func _complete(technology_id: String) -> void:
 
 func _get_tech(technology_id: String) -> Dictionary:
 	return DataLoader.load_json("technologies/technologies.json").get(technology_id, {})
+
+func _era_order(era_id: String) -> int:
+	return int(DataLoader.load_json("eras/eras.json").get(era_id, {}).get("order", 99))
