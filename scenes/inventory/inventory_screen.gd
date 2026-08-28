@@ -24,7 +24,7 @@ func _ready() -> void:
 func _refresh() -> void:
 	for child in items_list.get_children():
 		child.queue_free()
-	count_label.text = "%d / %d objetos" % [GameState.inventory.size(), InventoryManager.CAPACITY]
+	count_label.text = "%d / 50 objetos  ·  ORO %d" % [GameState.inventory.size(), GameState.gold]
 	detail_panel.visible = false
 	_selected_id = ""
 	if GameState.inventory.is_empty():
@@ -74,10 +74,33 @@ func _refresh_buttons_state() -> void:
 	sell_button.disabled = not has_selection
 
 func _on_equip_pressed() -> void:
-	InventoryManager.equip_item(_selected_id)
+	if InventoryManager.equip_item(_selected_id):
+		_show_toast("¡Equipado!")
+	else:
+		_show_toast("No se pudo equipar")
 
 func _on_sell_pressed() -> void:
-	InventoryManager.sell_item(_selected_id)
+	var val := InventoryManager.sell_item(_selected_id)
+	if val > 0:
+		_show_toast("Vendido por %d oro" % val)
 
 func _on_sell_commons_pressed() -> void:
-	InventoryManager.sell_all_by_rarity("common")
+	var total := InventoryManager.sell_all_by_rarity("common")
+	if total > 0:
+		_show_toast("Vendidos comunes por %d oro" % total)
+	else:
+		_show_toast("No hay comunes para vender")
+
+func _show_toast(text: String) -> void:
+	var lbl := Label.new()
+	lbl.text = text
+	lbl.add_theme_font_size_override("font_size", 38)
+	lbl.add_theme_color_override("font_color", Color(1, 0.92, 0.5))
+	lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	lbl.position = Vector2(40, 1720)
+	lbl.size = Vector2(1000, 60)
+	add_child(lbl)
+	var tw := create_tween()
+	tw.tween_interval(1.4)
+	tw.tween_property(lbl, "modulate:a", 0.0, 0.4)
+	tw.tween_callback(lbl.queue_free)

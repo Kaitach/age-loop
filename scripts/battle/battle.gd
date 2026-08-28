@@ -185,15 +185,18 @@ func _build_compare_text(slot: String) -> String:
 func _on_drop_equipped() -> void:
 	if _current_drop.is_empty():
 		return
-	InventoryManager.equip_item(String(_current_drop["id"]))
-	result_sub.text += "   [Equipado]"
+	if InventoryManager.equip_item(String(_current_drop["id"])):
+		result_sub.text += "   [Equipado]"
+		_show_tutorial("¡Objeto equipado!")
 	_hide_drop_card()
 
 func _on_drop_sold() -> void:
 	if _current_drop.is_empty():
 		return
+	var val := int(_current_drop.get("sell_value", 0))
 	InventoryManager.sell_item(String(_current_drop["id"]))
-	result_sub.text += "   [+%d oro]" % int(_current_drop.get("sell_value", 0))
+	result_sub.text += "   [+%d oro]" % val
+	_show_tutorial("Vendido por %d oro" % val)
 	_hide_drop_card()
 
 func _hide_drop_card() -> void:
@@ -223,13 +226,25 @@ func _end_battle(victory: bool) -> void:
 	base_building.set_process(false)
 	result_title.text = "VICTORIA" if victory else "DERROTA"
 	if not victory:
-		result_sub.text = "La base ha caido."
+		result_sub.text = "La base ha caido. Vuelves a la oleada anterior para farmear."
+		retry_button.text = "REINTENTAR"
+		if GameState.wave > 1:
+			GameState.wave -= 1
+		elif GameState.world > 1:
+			GameState.world -= 1
+			GameState.wave = MAX_WAVE
+		SignalBus.save_requested.emit()
 	else:
+		retry_button.text = "SIGUIENTE"
 		if TutorialManager.should_show("first_victory"):
 			TutorialManager.mark_seen("first_victory")
 			_show_tutorial("¡Victoria! Ganaste recursos. Usa MEJORAS para fortalecerte.")
 		AudioManager.play_sfx("victory")
 		_shake(6.0)
+		get_tree().create_timer(2.8).timeout.connect(func() -> void:
+			if state == State.WON and is_inside_tree():
+				get_tree().reload_current_scene()
+		, CONNECT_ONE_SHOT)
 	result_panel.visible = true
 	result_panel.scale = Vector2(0.9, 0.9)
 	var tw := create_tween()
