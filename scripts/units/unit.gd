@@ -36,6 +36,14 @@ var body_size: float = 58.0
 func _ready() -> void:
 	super()
 	add_to_group("allies")
+	var spr := Sprite2D.new()
+	var path := "res://assets/units/%s.png" % _type
+	if ResourceLoader.exists(path):
+		spr.texture = load(path) as Texture2D
+	else:
+		spr.texture = load("res://assets/units/archer.png") as Texture2D
+	spr.centered = true
+	add_child(spr)
 
 func _process(delta: float) -> void:
 	super(delta)
@@ -75,7 +83,4 @@ func _shoot(target: Enemy) -> void:
 
 func _draw() -> void:
 	var half := body_size * 0.5
-	draw_rect(Rect2(-half, -half, body_size, body_size), body_color)
-	draw_rect(Rect2(-half, -half, body_size, body_size), body_color.darkened(0.35), false, 4.0)
-	draw_circle(Vector2(0, -6), 10, Color(1, 1, 1, 0.9))
 	_draw_hp_bar(body_size + 16, -half - 22)

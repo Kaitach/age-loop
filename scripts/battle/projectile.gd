@@ -17,6 +17,10 @@ func setup(from: Vector2, p_target: Combatant, p_damage: int, p_speed: float) ->
 
 func _ready() -> void:
 	add_to_group("projectiles")
+	var spr := Sprite2D.new()
+	spr.texture = load("res://assets/projectiles/projectile.png") as Texture2D
+	spr.centered = true
+	add_child(spr)
 
 func _process(delta: float) -> void:
 	if is_instance_valid(target) and target.is_alive():
@@ -32,5 +36,3 @@ func _process(delta: float) -> void:
 
 func _draw() -> void:
 	draw_line(Vector2.ZERO, -_direction * 26.0, Color(0.5, 0.85, 1.0, 0.4), 5.0)
-	draw_circle(Vector2.ZERO, RADIUS, Color(0.5, 0.85, 1.0))
-	draw_circle(Vector2.ZERO, RADIUS * 0.45, Color(0.9, 0.98, 1.0))

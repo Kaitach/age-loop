@@ -27,6 +27,10 @@ func _ready() -> void:
 	critical_damage = float(final_stats["critical_damage"])
 	super()
 	add_to_group("player")
+	var spr := Sprite2D.new()
+	spr.texture = load("res://assets/characters/player.png") as Texture2D
+	spr.centered = true
+	add_child(spr)
 
 func _process(delta: float) -> void:
 	super(delta)
@@ -79,8 +83,4 @@ func _on_death() -> void:
 	super()
 
 func _draw() -> void:
-	draw_arc(Vector2.ZERO, BODY_RADIUS, 0.0, TAU, 40, Color(0.25, 0.55, 0.95).darkened(0.3), 7.0)
-	draw_circle(Vector2.ZERO, BODY_RADIUS - 5.0, Color(0.25, 0.55, 0.95))
-	draw_circle(Vector2(0, -8), BODY_RADIUS * 0.45, Color(0.75, 0.9, 1.0))
-	draw_colored_polygon(PackedVector2Array([Vector2(0, -BODY_RADIUS - 26), Vector2(-14, -BODY_RADIUS - 4), Vector2(14, -BODY_RADIUS - 4)]), Color(0.9, 0.95, 1.0))
 	_draw_hp_bar(BODY_RADIUS + 44, -BODY_RADIUS - 36.0)

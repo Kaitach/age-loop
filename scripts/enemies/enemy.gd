@@ -41,6 +41,7 @@ func setup_from_data(enemy_id_p: String, data: Dictionary, hp_scale: float, dmg_
 func _ready() -> void:
 	super()
 	add_to_group("enemies")
+	_add_sprite()
 
 func _process(delta: float) -> void:
 	super(delta)
@@ -97,18 +98,19 @@ func _on_death() -> void:
 	remove_from_group("enemies")
 	super()
 
+func _add_sprite() -> void:
+	var path := "res://assets/enemies/%s.png" % enemy_id
+	if not ResourceLoader.exists(path):
+		path = "res://assets/enemies/normal.png"
+	var tex = load(path) as Texture2D
+	if tex == null:
+		return
+	var spr := Sprite2D.new()
+	spr.texture = tex
+	spr.centered = true
+	add_child(spr)
+
 func _draw() -> void:
 	var half := body_size * 0.5
-	var body := Rect2(-half, -half, body_size, body_size)
-	draw_rect(body, body_color)
-	draw_rect(body, body_color.darkened(0.4), false, 5.0)
-	var eye := body_size * 0.18
-	draw_rect(Rect2(-eye * 1.4, -body_size * 0.25, eye, eye), Color(1, 1, 1))
-	draw_rect(Rect2(eye * 0.4, -body_size * 0.25, eye, eye), Color(1, 1, 1))
-	draw_rect(Rect2(-body_size * 0.22, body_size * 0.16, body_size * 0.44, body_size * 0.1), Color(0.2, 0.05, 0.05))
-	if is_boss:
-		for i in range(3):
-			var x := -half * 0.55 + i * half * 0.55
-			draw_colored_polygon(PackedVector2Array([Vector2(x - half * 0.14, -half), Vector2(x, -half - body_size * 0.22), Vector2(x + half * 0.14, -half)]), Color(0.95, 0.8, 0.3))
 	var bar_width := maxf(body_size + 24.0, BOSS_BAR_WIDTH if is_boss else 0.0)
 	_draw_hp_bar(bar_width, -half - 30.0)
