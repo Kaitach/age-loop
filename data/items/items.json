@@ -5,7 +5,8 @@
       "slot": "weapon",
       "era": "prehistoric",
       "base_stats": {
-        "damage": 10
+        "damage": 10,
+        "attack_range": 0
       },
       "allowed_modifiers": [
         "damage",
@@ -18,7 +19,8 @@
       "slot": "weapon",
       "era": "prehistoric",
       "base_stats": {
-        "damage": 15
+        "damage": 15,
+        "attack_range": 55
       },
       "allowed_modifiers": [
         "damage",
@@ -89,7 +91,8 @@
       "slot": "weapon",
       "era": "bronze",
       "base_stats": {
-        "damage": 28
+        "damage": 28,
+        "attack_range": 15
       },
       "allowed_modifiers": [
         "damage",
@@ -102,7 +105,8 @@
       "slot": "weapon",
       "era": "iron",
       "base_stats": {
-        "damage": 42
+        "damage": 42,
+        "attack_range": 20
       },
       "allowed_modifiers": [
         "damage",
@@ -144,6 +148,20 @@
       "allowed_modifiers": [
         "max_health",
         "critical_damage"
+      ]
+    },
+    "hunting_bow": {
+      "name": "Arco de caza",
+      "slot": "weapon",
+      "era": "prehistoric",
+      "base_stats": {
+        "damage": 13,
+        "attack_range": 325
+      },
+      "allowed_modifiers": [
+        "damage",
+        "attack_speed",
+        "critical_chance"
       ]
     }
   },

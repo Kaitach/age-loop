@@ -8,6 +8,7 @@ static func player_final_stats(player: Player) -> Dictionary:
 		"damage": float(player.base_damage) + float(Upgrades.bonus_value("player_damage")),
 		"max_health": float(player.base_max_health) + float(Upgrades.bonus_value("player_health")),
 		"attack_speed": player.attack_speed,
+		"attack_range": 95.0,
 		"critical_chance": float(balance.get("critical_chance_base", 0.05)),
 		"critical_damage": float(balance.get("critical_damage_base", 1.5)),
 	}

@@ -17,25 +17,32 @@ var critical_damage: float = 1.5
 
 var _attack_cooldown: float = 0.6
 var _dying: bool = false
+var _bob: float = 0.0
+var _base_y: float = 0.0
 
 func _ready() -> void:
 	var final_stats := StatsCalculator.player_final_stats(self)
 	damage = int(round(float(final_stats["damage"])))
 	max_health = int(round(float(final_stats["max_health"])))
 	attack_speed = float(final_stats["attack_speed"])
+	attack_range = float(final_stats.get("attack_range", 95.0))
 	critical_chance = float(final_stats["critical_chance"])
 	critical_damage = float(final_stats["critical_damage"])
 	super()
 	add_to_group("player")
+	_base_y = position.y
 	var spr := Sprite2D.new()
 	spr.texture = load("res://assets/characters/player.png") as Texture2D
 	spr.centered = true
+	spr.name = "Sprite"
 	add_child(spr)
 
 func _process(delta: float) -> void:
 	super(delta)
 	if _dying:
 		return
+	_bob += delta * 6.0
+	position.y = _base_y + sin(_bob) * 2.5
 	_attack_cooldown -= delta
 	if _attack_cooldown > 0.0:
 		return
@@ -58,7 +65,6 @@ func _nearest_enemy() -> Enemy:
 	return best
 
 func _shoot(target: Enemy) -> void:
-	var projectile := Projectile.new()
 	var hit_damage := damage
 	var is_crit := randf() < critical_chance
 	if is_crit:
@@ -67,8 +73,25 @@ func _shoot(target: Enemy) -> void:
 		_play_sfx("critical")
 	else:
 		_play_sfx("hit")
+	if attack_range < 160.0:
+		if is_instance_valid(target) and target.is_alive() and global_position.distance_to(target.global_position) <= attack_range + 10.0:
+			target.take_damage(hit_damage)
+			_show_slash(target.global_position)
+		return
+	var projectile := Projectile.new()
 	projectile.setup(global_position + Vector2(0, -34), target, hit_damage, projectile_speed)
 	get_parent().add_child(projectile)
+
+func _show_slash(pos: Vector2) -> void:
+	var slash := Line2D.new()
+	slash.width = 7.0
+	slash.default_color = Color(1, 0.9, 0.4, 0.9)
+	slash.points = PackedVector2Array([pos + Vector2(-28, -18), pos + Vector2(28, 18)])
+	slash.z_index = 10
+	get_tree().current_scene.add_child(slash)
+	var tw := create_tween()
+	tw.tween_property(slash, "modulate:a", 0.0, 0.22)
+	tw.tween_callback(slash.queue_free)
 
 func _play_sfx(id: String) -> void:
 	var tree := get_tree()

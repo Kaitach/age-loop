@@ -18,6 +18,9 @@ var _current_drop: Dictionary = {}
 @onready var units_container: Node2D = $World/Units
 @onready var wave_label: Label = %WaveLabel
 @onready var currency_label: Label = %CurrencyLabel
+@onready var gold_label: Label = %GoldLabel
+@onready var science_label: Label = %ScienceLabel
+@onready var mat_label: Label = %MatLabel
 @onready var player_bar: ProgressBar = %PlayerBar
 @onready var base_bar: ProgressBar = %BaseBar
 @onready var result_panel: CenterContainer = %ResultPanel
@@ -41,6 +44,11 @@ var _current_drop: Dictionary = {}
 @onready var era_banner_title: Label = %EraBannerTitle
 @onready var era_banner_name: Label = %EraBannerName
 
+const SPAWN_X := 1160.0
+const SPAWN_Y_BASE := 1350.0
+const SPAWN_Y_VAR := 40.0
+const PLAYER_POS := Vector2(220, 1350)
+const BASE_POS := Vector2(140, 1450)
 var wave_manager := WaveManager.new()
 
 func _ready() -> void:
@@ -63,6 +71,8 @@ func _ready() -> void:
 	close_upgrades_button.pressed.connect(func() -> void: upgrades_panel.visible = false)
 	item_equip_button.pressed.connect(_on_drop_equipped)
 	item_sell_button.pressed.connect(_on_drop_sold)
+	player.position = PLAYER_POS
+	base_building.position = BASE_POS
 	_wave_drops.clear()
 	_current_drop = {}
 	SignalBus.currency_changed.connect(_refresh_currency)
@@ -86,8 +96,8 @@ func _on_spawn_enemy(enemy_id: String, position_p: Vector2) -> void:
 		WaveManager.hp_scale_for(GameState.world, GameState.wave),
 		WaveManager.dmg_scale_for(GameState.world, GameState.wave)
 	)
-	enemy.position = position_p
-	enemy.died.connect(_on_enemy_killed.bind(enemy_id))
+	# lateral spawn: from right, random Y around ground
+	enemy.position = Vector2(SPAWN_X, SPAWN_Y_BASE + randf_range(-SPAWN_Y_VAR, SPAWN_Y_VAR))
 	enemies_container.add_child(enemy)
 
 func _on_enemy_killed(enemy_id: String) -> void:
@@ -209,7 +219,7 @@ func _spawn_allies() -> void:
 	for i in range(count):
 		var u := AllyUnit.new()
 		u.setup(types[i % types.size()])
-		u.position = Vector2(380 + i * 160, 1380)
+		u.position = Vector2(280 + i * 110, SPAWN_Y_BASE + randf_range(-12, 12))
 		units_container.add_child(u)
 
 func _end_battle(victory: bool) -> void:
@@ -234,6 +244,10 @@ func _end_battle(victory: bool) -> void:
 			GameState.world -= 1
 			GameState.wave = MAX_WAVE
 		SignalBus.save_requested.emit()
+		get_tree().create_timer(2.5).timeout.connect(func() -> void:
+			if state == State.LOST and is_inside_tree():
+				get_tree().reload_current_scene()
+		, CONNECT_ONE_SHOT)
 	else:
 		retry_button.text = "SIGUIENTE"
 		if TutorialManager.should_show("first_victory"):
@@ -252,6 +266,10 @@ func _end_battle(victory: bool) -> void:
 
 func _refresh_currency() -> void:
 	currency_label.text = "ORO %d    CIENCIA %d    MAT %d" % [GameState.gold, GameState.science, GameState.materials]
+	if is_instance_valid(gold_label):
+		gold_label.text = str(GameState.gold)
+		science_label.text = str(GameState.science)
+		mat_label.text = str(GameState.materials)
 
 func _apply_era_visual(era_id: String) -> void:
 	match era_id:

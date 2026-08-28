@@ -1,8 +1,11 @@
-[gd_scene load_steps=11 format=3]
+[gd_scene load_steps=14 format=3]
 
 [ext_resource type="Script" path="res://scripts/battle/battle.gd" id="1"]
 [ext_resource type="Script" path="res://scripts/battle/base_building.gd" id="2"]
 [ext_resource type="Script" path="res://scripts/battle/player.gd" id="3"]
+[ext_resource type="Texture2D" path="res://assets/ui/icons/gold.png" id="4"]
+[ext_resource type="Texture2D" path="res://assets/ui/icons/science.png" id="5"]
+[ext_resource type="Texture2D" path="res://assets/ui/icons/materials.png" id="6"]
 
 [sub_resource type="StyleBoxFlat" id="btn_normal"]
 content_margin_left = 30.0
@@ -83,19 +86,25 @@ offset_bottom = 1920.0
 color = Color(0.0509804, 0.0705882, 0.121569, 1)
 
 [node name="GroundStrip" type="ColorRect" parent="."]
-offset_top = 1560.0
+offset_top = 1380.0
 offset_right = 1080.0
 offset_bottom = 1920.0
 color = Color(0.0862745, 0.109804, 0.164706, 1)
 
+[node name="GroundDetail" type="ColorRect" parent="."]
+offset_top = 1380.0
+offset_right = 1080.0
+offset_bottom = 1392.0
+color = Color(0.18, 0.22, 0.14, 1)
+
 [node name="World" type="Node2D" parent="."]
 
 [node name="Base" type="Node2D" parent="World"]
-position = Vector2(540, 1725)
+position = Vector2(140, 1450)
 script = ExtResource("2")
 
 [node name="Player" type="Node2D" parent="World"]
-position = Vector2(540, 1400)
+position = Vector2(220, 1350)
 script = ExtResource("3")
 
 [node name="Enemies" type="Node2D" parent="World"]
@@ -120,13 +129,58 @@ theme_override_font_sizes/font_size = 58
 text = "OLEADA 1-1"
 horizontal_alignment = 1
 
-[node name="CurrencyLabel" type="Label" parent="UI/TopVBox"]
+[node name="CurrencyRow" type="HBoxContainer" parent="UI/TopVBox"]
+layout_mode = 2
+alignment = 1
+theme_override_constants/separation = 18
+
+[node name="GoldIcon" type="TextureRect" parent="UI/TopVBox/CurrencyRow"]
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 2
+texture = ExtResource("4")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="GoldLabel" type="Label" parent="UI/TopVBox/CurrencyRow"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.9, 0.78, 0.4, 1)
-theme_override_font_sizes/font_size = 38
-text = "ORO 0    CIENCIA 0    MAT 0"
-horizontal_alignment = 1
+theme_override_font_sizes/font_size = 34
+text = "0"
+
+[node name="ScienceIcon" type="TextureRect" parent="UI/TopVBox/CurrencyRow"]
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 2
+texture = ExtResource("5")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="ScienceLabel" type="Label" parent="UI/TopVBox/CurrencyRow"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.75, 0.95, 1)
+theme_override_font_sizes/font_size = 34
+text = "0"
+
+[node name="MatIcon" type="TextureRect" parent="UI/TopVBox/CurrencyRow"]
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 2
+texture = ExtResource("6")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="MatLabel" type="Label" parent="UI/TopVBox/CurrencyRow"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.75, 0.75, 0.8, 1)
+theme_override_font_sizes/font_size = 34
+text = "0"
+
+[node name="CurrencyLabel" type="Label" parent="UI/TopVBox"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+text = ""
 
 [node name="PlayerBar" type="ProgressBar" parent="UI/TopVBox"]
 unique_name_in_owner = true

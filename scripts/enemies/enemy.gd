@@ -22,6 +22,8 @@ var _attack_cooldown: float = 0.0
 var _dying: bool = false
 var _summon_cd: float = 7.0
 var _enraged: bool = false
+var _bob: float = 0.0
+var _base_y: float = 0.0
 
 func setup_from_data(enemy_id_p: String, data: Dictionary, hp_scale: float, dmg_scale: float) -> void:
 	enemy_id = enemy_id_p
@@ -41,6 +43,8 @@ func setup_from_data(enemy_id_p: String, data: Dictionary, hp_scale: float, dmg_
 func _ready() -> void:
 	super()
 	add_to_group("enemies")
+	_base_y = position.y
+	_bob = randf() * TAU
 	_add_sprite()
 
 func _process(delta: float) -> void:
@@ -67,14 +71,23 @@ func _process(delta: float) -> void:
 		return
 	var dist := global_position.distance_to(_target.global_position)
 	var eff_speed := movement_speed
+	# lateral bobbing walk
+	_bob += delta * 7.0
+	position.y = _base_y + sin(_bob) * 3.0
 	if dist > attack_range:
 		global_position += (_target.global_position - global_position).normalized() * eff_speed * delta
+		_base_y = global_position.y
 	else:
 		_attack_cooldown -= delta
 		if _attack_cooldown <= 0.0:
 			_attack_cooldown = 1.0 / attack_speed
 			_target.take_damage(damage)
 			queue_redraw()
+			# lunge forward on attack
+			var tw := create_tween()
+			var dir := (_target.global_position - global_position).normalized()
+			tw.tween_property(self, "position", position + dir * 12.0, 0.08)
+			tw.tween_property(self, "position", position, 0.12)
 
 func _spawn_minions() -> void:
 	var parent_node := get_parent()
@@ -108,6 +121,8 @@ func _add_sprite() -> void:
 	var spr := Sprite2D.new()
 	spr.texture = tex
 	spr.centered = true
+	spr.scale.x = -1
+	spr.name = "Sprite"
 	add_child(spr)
 
 func _draw() -> void:

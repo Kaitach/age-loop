@@ -7,6 +7,9 @@ var attack_range: float = 360.0
 
 var _attack_cd: float = 0.0
 var _type: String = "archer"
+var _bob: float = 0.0
+var _base_y: float = 0.0
+var _dying: bool = false
 
 func setup(unit_id: String) -> void:
 	_type = unit_id
@@ -36,6 +39,8 @@ var body_size: float = 58.0
 func _ready() -> void:
 	super()
 	add_to_group("allies")
+	_base_y = position.y
+	_bob = randf() * TAU
 	var spr := Sprite2D.new()
 	var path := "res://assets/units/%s.png" % _type
 	if ResourceLoader.exists(path):
@@ -43,12 +48,15 @@ func _ready() -> void:
 	else:
 		spr.texture = load("res://assets/units/archer.png") as Texture2D
 	spr.centered = true
+	spr.name = "Sprite"
 	add_child(spr)
 
 func _process(delta: float) -> void:
 	super(delta)
 	if _dying:
 		return
+	_bob += delta * 6.0
+	position.y = _base_y + sin(_bob) * 2.0
 	_attack_cd -= delta
 	if _attack_cd > 0.0:
 		return
@@ -56,8 +64,6 @@ func _process(delta: float) -> void:
 	if target != null:
 		_attack_cd = 1.0 / attack_speed
 		_shoot(target)
-
-var _dying: bool = false
 func _on_death() -> void:
 	_dying = true
 	remove_from_group("allies")
