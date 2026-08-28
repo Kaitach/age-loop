@@ -32,6 +32,19 @@ var _current_drop: Dictionary = {}
 @onready var upgrades_panel: CenterContainer = %UpgradesPanel
 @onready var upgrades_list: VBoxContainer = %UpgradesList
 @onready var close_upgrades_button: Button = %CloseUpgradesButton
+@onready var inv_button: Button = %InvButton
+@onready var equip_button: Button = %EquipButton
+@onready var battle_upg_button: Button = %BattleUpgButton
+@onready var tech_button: Button = %TechButton
+@onready var equip_panel: CenterContainer = %EquipPanel
+@onready var equip_list: VBoxContainer = %EquipList
+@onready var equip_stats: Label = %EquipStats
+@onready var close_equip_button: Button = %CloseEquipButton
+@onready var research_quick_panel: CenterContainer = %ResearchQuickPanel
+@onready var active_research_label: Label = %ActiveResearchLabel
+@onready var research_time_label: Label = %ResearchTimeLabel
+@onready var research_list: VBoxContainer = %ResearchList
+@onready var close_research_button: Button = %CloseResearchButton
 @onready var item_card: VBoxContainer = %ItemCard
 @onready var item_title: Label = %ItemTitle
 @onready var item_stats: Label = %ItemStats
@@ -77,11 +90,20 @@ func _ready() -> void:
 	_current_drop = {}
 	SignalBus.currency_changed.connect(_refresh_currency)
 	SignalBus.era_changed.connect(_on_era_changed)
+	SignalBus.technology_completed.connect(func(_id): if is_inside_tree(): _refresh_research_quick())
 	_apply_era_visual(GameState.current_era)
 	_spawn_allies()
+	inv_button.pressed.connect(func() -> void: get_tree().change_scene_to_file("res://scenes/inventory/inventory_screen.tscn"))
+	equip_button.pressed.connect(_toggle_equip_panel)
+	battle_upg_button.pressed.connect(_open_upgrades)
+	tech_button.pressed.connect(_toggle_research_panel)
+	close_equip_button.pressed.connect(func() -> void: equip_panel.visible = false)
+	close_research_button.pressed.connect(func() -> void: research_quick_panel.visible = false)
 	_refresh_currency()
 
 func _process(delta: float) -> void:
+	if research_quick_panel.visible and ResearchManager.is_researching():
+		research_time_label.text = "%ds restantes" % ResearchManager.get_remaining_seconds()
 	if state != State.FIGHTING:
 		return
 	wave_manager.tick(delta)
@@ -344,6 +366,125 @@ func _refresh_upgrade_rows() -> void:
 			row["name"].text = "%s  Nv.%d  (%s)" % [def.get("name", upgrade_id), level, def.get("desc", "")]
 			row["button"].text = "MEJORAR — %d ORO" % Upgrades.cost_for(upgrade_id)
 			row["button"].disabled = not Economy.can_afford({ "gold": Upgrades.cost_for(upgrade_id) })
+
+func _toggle_equip_panel() -> void:
+	if equip_panel.visible:
+		equip_panel.visible = false
+		return
+	_refresh_equip_panel()
+	equip_panel.visible = true
+	research_quick_panel.visible = false
+	upgrades_panel.visible = false
+
+func _refresh_equip_panel() -> void:
+	for c in equip_list.get_children():
+		c.queue_free()
+	var slots := ["weapon", "helmet", "armor", "gloves", "boots", "amulet"]
+	for slot in slots:
+		var inst = GameState.equipped_items.get(slot, null)
+		var row := HBoxContainer.new()
+		row.add_theme_constant_override("separation", 12)
+		var name_lbl := Label.new()
+		name_lbl.custom_minimum_size = Vector2(520, 44)
+		name_lbl.add_theme_font_size_override("font_size", 30)
+		if inst == null or not (inst is Dictionary):
+			name_lbl.text = "%s: Vacío" % slot.capitalize()
+			name_lbl.add_theme_color_override("font_color", Color(0.6, 0.65, 0.7))
+		else:
+			name_lbl.text = "%s: %s (%s)" % [slot.capitalize(), inst.get("name", "?"), LootManager.get_rarity_name(str(inst.get("rarity", "")))]
+			name_lbl.add_theme_color_override("font_color", LootManager.get_rarity_color(str(inst.get("rarity", ""))))
+		row.add_child(name_lbl)
+		if inst != null and inst is Dictionary:
+			var btn := Button.new()
+			btn.text = "QUITAR"
+			btn.custom_minimum_size = Vector2(140, 64)
+			btn.add_theme_font_size_override("font_size", 26)
+			var sid := str(slot)
+			btn.pressed.connect(func() -> void:
+				InventoryManager.unequip_item(sid)
+				_refresh_equip_panel()
+			)
+			row.add_child(btn)
+		equip_list.add_child(row)
+	var dummy := Player.new()
+	dummy.base_damage = 14
+	dummy.base_max_health = 100
+	dummy.attack_speed = 1.2
+	var stats := StatsCalculator.player_final_stats(dummy)
+	dummy.free()
+	equip_stats.text = "Daño %d  |  Vida %d  |  Crit %.1f%%" % [int(stats["damage"]), int(stats["max_health"]), float(stats["critical_chance"]) * 100.0]
+
+func _toggle_research_panel() -> void:
+	if research_quick_panel.visible:
+		research_quick_panel.visible = false
+		return
+	_refresh_research_quick()
+	research_quick_panel.visible = true
+	equip_panel.visible = false
+	upgrades_panel.visible = false
+
+func _refresh_research_quick() -> void:
+	if ResearchManager.is_researching():
+		var cur: Dictionary = GameState.current_research
+		var tid := str(cur.get("technology_id", ""))
+		var tech: Dictionary = DataLoader.load_json("technologies/technologies.json").get(tid, {})
+		active_research_label.text = "Investigando: %s" % tech.get("name", tid)
+		research_time_label.text = "%ds restantes" % ResearchManager.get_remaining_seconds()
+	else:
+		active_research_label.text = "Sin investigación (OFFLINE)"
+		research_time_label.text = ""
+	for c in research_list.get_children():
+		c.queue_free()
+	var techs: Dictionary = DataLoader.load_json("technologies/technologies.json")
+	var eras: Dictionary = DataLoader.load_json("eras/eras.json")
+	var ordered: Array = eras.values()
+	ordered.sort_custom(func(a, b): return int(a.get("order", 99)) < int(b.get("order", 99)))
+	for era in ordered:
+		var eid := str(era.get("id", ""))
+		var header := Label.new()
+		header.text = str(era.get("name", "")).to_upper()
+		header.add_theme_font_size_override("font_size", 36)
+		header.add_theme_color_override("font_color", Color(0.9, 0.78, 0.4))
+		header.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		research_list.add_child(header)
+		for tid in techs.keys():
+			var tech2: Dictionary = techs[tid]
+			if str(tech2.get("era", "")) != eid:
+				continue
+			var row := HBoxContainer.new()
+			row.add_theme_constant_override("separation", 8)
+			var lbl := Label.new()
+			lbl.custom_minimum_size = Vector2(480, 36)
+			lbl.add_theme_font_size_override("font_size", 28)
+			lbl.text = str(tech2.get("name", tid))
+			if ResearchManager.is_completed(str(tid)):
+				lbl.add_theme_color_override("font_color", Color(0.3, 0.8, 0.35))
+				lbl.text = "✓ " + lbl.text
+			elif not bool(ResearchManager.can_start(str(tid))["ok"]):
+				lbl.add_theme_color_override("font_color", Color(0.55, 0.57, 0.62))
+			else:
+				lbl.add_theme_color_override("font_color", Color(0.6, 0.82, 1.0))
+			row.add_child(lbl)
+			var btn := Button.new()
+			btn.custom_minimum_size = Vector2(180, 64)
+			btn.add_theme_font_size_override("font_size", 26)
+			var check: Dictionary = ResearchManager.can_start(str(tid))
+			if ResearchManager.is_completed(str(tid)):
+				btn.text = "HECHO"
+				btn.disabled = true
+			elif bool(check["ok"]):
+				btn.text = "INVESTIGAR"
+				var id_copy := str(tid)
+				btn.pressed.connect(func() -> void:
+					if ResearchManager.start_research(id_copy):
+						_refresh_research_quick()
+						_refresh_currency()
+				)
+			else:
+				btn.text = "BLOQ"
+				btn.disabled = true
+			row.add_child(btn)
+			research_list.add_child(row)
 
 func _on_player_crit(target: Combatant, dmg: int) -> void:
 	if not is_instance_valid(target):

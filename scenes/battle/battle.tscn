@@ -204,6 +204,58 @@ theme_override_styles/background = SubResource("bar_bg")
 theme_override_styles/fill = SubResource("bar_fill_orange")
 show_percentage = false
 
+[node name="BottomBar" type="HBoxContainer" parent="UI"]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = -96.0
+offset_right = 1060.0
+offset_bottom = -16.0
+grow_vertical = 0
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="InvButton" type="Button" parent="UI/BottomBar"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(240, 78)
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("btn_normal")
+theme_override_styles/hover = SubResource("btn_hover")
+theme_override_styles/pressed = SubResource("btn_pressed")
+text = "INVENTARIO"
+
+[node name="EquipButton" type="Button" parent="UI/BottomBar"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(220, 78)
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("btn_normal")
+theme_override_styles/hover = SubResource("btn_hover")
+theme_override_styles/pressed = SubResource("btn_pressed")
+text = "EQUIPO"
+
+[node name="BattleUpgButton" type="Button" parent="UI/BottomBar"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(220, 78)
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("btn_normal")
+theme_override_styles/hover = SubResource("btn_hover")
+theme_override_styles/pressed = SubResource("btn_pressed")
+text = "MEJORAS"
+
+[node name="TechButton" type="Button" parent="UI/BottomBar"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(260, 78)
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("btn_normal")
+theme_override_styles/hover = SubResource("btn_hover")
+theme_override_styles/pressed = SubResource("btn_pressed")
+text = "TECNOLOGIA"
+
 [node name="ResultPanel" type="CenterContainer" parent="UI"]
 unique_name_in_owner = true
 visible = false
@@ -379,6 +431,118 @@ theme_override_styles/normal = SubResource("btn_normal")
 theme_override_styles/hover = SubResource("btn_hover")
 theme_override_styles/pressed = SubResource("btn_pressed")
 theme_override_styles/focus = SubResource("btn_hover")
+text = "CERRAR"
+
+[node name="EquipPanel" type="CenterContainer" parent="UI"]
+unique_name_in_owner = true
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="PanelContainer" parent="UI/EquipPanel"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("panel_box")
+
+[node name="VBox" type="VBoxContainer" parent="UI/EquipPanel/Panel"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="EquipTitle" type="Label" parent="UI/EquipPanel/Panel/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.94, 0.96, 1, 1)
+theme_override_font_sizes/font_size = 56
+text = "EQUIPO"
+horizontal_alignment = 1
+
+[node name="EquipList" type="VBoxContainer" parent="UI/EquipPanel/Panel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="EquipStats" type="Label" parent="UI/EquipPanel/Panel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.62, 0.68, 0.8, 1)
+theme_override_font_sizes/font_size = 30
+text = ""
+horizontal_alignment = 1
+
+[node name="CloseEquipButton" type="Button" parent="UI/EquipPanel/Panel/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(320, 96)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 36
+theme_override_styles/normal = SubResource("btn_normal")
+theme_override_styles/hover = SubResource("btn_hover")
+theme_override_styles/pressed = SubResource("btn_pressed")
+text = "CERRAR"
+
+[node name="ResearchQuickPanel" type="CenterContainer" parent="UI"]
+unique_name_in_owner = true
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="PanelContainer" parent="UI/ResearchQuickPanel"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("panel_box")
+
+[node name="VBox" type="VBoxContainer" parent="UI/ResearchQuickPanel/Panel"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="ResearchTitle" type="Label" parent="UI/ResearchQuickPanel/Panel/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.94, 0.96, 1, 1)
+theme_override_font_sizes/font_size = 52
+text = "TECNOLOGIA (OFFLINE)"
+horizontal_alignment = 1
+
+[node name="ActiveResearchRow" type="HBoxContainer" parent="UI/ResearchQuickPanel/Panel/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="ActiveResearchLabel" type="Label" parent="UI/ResearchQuickPanel/Panel/VBox/ActiveResearchRow"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.78, 0.4, 1)
+theme_override_font_sizes/font_size = 32
+text = "Sin investigación"
+
+[node name="ResearchTimeLabel" type="Label" parent="UI/ResearchQuickPanel/Panel/VBox/ActiveResearchRow"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.62, 0.68, 0.8, 1)
+theme_override_font_sizes/font_size = 32
+text = ""
+
+[node name="Scroll" type="ScrollContainer" parent="UI/ResearchQuickPanel/Panel/VBox"]
+layout_mode = 2
+custom_minimum_size = Vector2(860, 600)
+size_flags_vertical = 3
+
+[node name="ResearchList" type="VBoxContainer" parent="UI/ResearchQuickPanel/Panel/VBox/Scroll"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="CloseResearchButton" type="Button" parent="UI/ResearchQuickPanel/Panel/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(320, 96)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 36
+theme_override_styles/normal = SubResource("btn_normal")
+theme_override_styles/hover = SubResource("btn_hover")
+theme_override_styles/pressed = SubResource("btn_pressed")
 text = "CERRAR"
 
 [node name="EraBanner" type="CenterContainer" parent="UI"]

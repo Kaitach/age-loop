@@ -7,7 +7,7 @@ config_version=5
 [application]
 
 config/name="AGE LOOP"
-config/version="1.0.3"
+config/version="1.0.4"
 run/main_scene="res://scenes/bootstrap/bootstrap.tscn"
 config/features=PackedStringArray("4.7", "Mobile")
 boot_splash/bg_color=Color(0.0705882, 0.0980392, 0.160784, 1)
