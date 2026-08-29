@@ -63,12 +63,12 @@ func _ready() -> void:
 
 func _configure_menu_layout() -> void:
 	var visible_rect := get_viewport().get_visible_rect()
-	var content_width := minf(920.0, maxf(visible_rect.size.x - 80.0, 640.0))
-	var content_height := minf(1760.0, maxf(visible_rect.size.y - 120.0, 1200.0))
-	$TitleBlock.position = Vector2(visible_rect.position.x + (visible_rect.size.x - content_width) * 0.5, visible_rect.position.y + 64.0)
+	var content_width := minf(760.0, maxf(visible_rect.size.x - 64.0, 520.0))
+	var content_height := minf(1500.0, maxf(visible_rect.size.y - 72.0, 900.0))
+	$TitleBlock.position = Vector2(visible_rect.position.x + (visible_rect.size.x - content_width) * 0.5, visible_rect.position.y + 36.0)
 	$TitleBlock.size = Vector2(content_width, content_height)
-	$TitleBlock.add_theme_constant_override("separation", 22)
-	$TitleBlock/Spacer.custom_minimum_size = Vector2(0, 32)
+	$TitleBlock.add_theme_constant_override("separation", 14)
+	$TitleBlock/Spacer.custom_minimum_size = Vector2(0, 18)
 
 func _apply_premium_skin() -> void:
 	PREMIUM_STYLE.style_button(play_button, "green")
@@ -80,8 +80,10 @@ func _apply_premium_skin() -> void:
 		var icon_path: String = String(MENU_ICONS.get(icon_id, "res://assets/ui/icons/shield.png"))
 		button.icon = PREMIUM_STYLE.load_icon(icon_path, 64)
 		button.icon_alignment = HORIZONTAL_ALIGNMENT_LEFT
-	$TitleBlock/Title.add_theme_constant_override("outline_size", 10)
-	$TitleBlock/VersionLabel.add_theme_constant_override("outline_size", 5)
+	$TitleBlock/Title.add_theme_constant_override("outline_size", 8)
+	$TitleBlock/Title.add_theme_color_override("font_color", Color(1.0, 0.86, 0.46, 1.0))
+	$TitleBlock/VersionLabel.add_theme_constant_override("outline_size", 4)
+	$TitleBlock/VersionLabel.add_theme_color_override("font_color", Color(0.68, 0.78, 0.88, 1.0))
 
 func _animate_primary_button() -> void:
 	if not is_instance_valid(play_button):

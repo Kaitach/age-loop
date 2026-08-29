@@ -1,15 +1,15 @@
 class_name PremiumStyle
 extends RefCounted
 
-const GOLD := Color(0.88, 0.65, 0.23, 1.0)
-const GOLD_BRIGHT := Color(1.0, 0.82, 0.36, 1.0)
-const BLUE := Color(0.035, 0.15, 0.32, 0.96)
-const BLUE_HOVER := Color(0.07, 0.28, 0.53, 0.98)
-const BLUE_PRESSED := Color(0.02, 0.08, 0.19, 0.98)
-const GREEN := Color(0.12, 0.36, 0.14, 0.98)
-const GREEN_HOVER := Color(0.2, 0.53, 0.22, 1.0)
-const BROWN := Color(0.18, 0.11, 0.06, 0.98)
-const BROWN_HOVER := Color(0.30, 0.18, 0.08, 1.0)
+const GOLD := Color(0.92, 0.68, 0.24, 1.0)
+const GOLD_BRIGHT := Color(1.0, 0.86, 0.46, 1.0)
+const BLUE := Color(0.055, 0.12, 0.23, 0.98)
+const BLUE_HOVER := Color(0.10, 0.25, 0.42, 1.0)
+const BLUE_PRESSED := Color(0.025, 0.06, 0.13, 1.0)
+const GREEN := Color(0.08, 0.30, 0.23, 0.98)
+const GREEN_HOVER := Color(0.12, 0.48, 0.34, 1.0)
+const BROWN := Color(0.18, 0.12, 0.08, 0.98)
+const BROWN_HOVER := Color(0.34, 0.22, 0.12, 1.0)
 
 static func style_button(button: Button, variant: String = "blue") -> void:
 	var colors := _button_colors(variant)
@@ -17,14 +17,14 @@ static func style_button(button: Button, variant: String = "blue") -> void:
 		var style := StyleBoxFlat.new()
 		style.bg_color = entry[1]
 		style.border_color = GOLD_BRIGHT if entry[0] == "hover" else GOLD
-		style.set_border_width_all(3)
-		style.set_corner_radius_all(20)
-		style.shadow_color = Color(0.01, 0.02, 0.04, 0.68)
-		style.shadow_size = 12 if entry[0] != "pressed" else 6
-		style.content_margin_left = 26.0
-		style.content_margin_right = 26.0
-		style.content_margin_top = 16.0
-		style.content_margin_bottom = 16.0
+		style.set_border_width_all(1 if entry[0] != "hover" else 2)
+		style.set_corner_radius_all(14)
+		style.shadow_color = Color(0.0, 0.01, 0.03, 0.58)
+		style.shadow_size = 10 if entry[0] != "pressed" else 4
+		style.content_margin_left = 22.0
+		style.content_margin_right = 22.0
+		style.content_margin_top = 13.0
+		style.content_margin_bottom = 13.0
 		button.add_theme_stylebox_override(entry[0], style)
 	button.add_theme_color_override("font_color", Color(0.98, 0.96, 0.9, 1))
 	button.add_theme_color_override("font_hover_color", Color.WHITE)

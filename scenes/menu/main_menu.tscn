@@ -118,7 +118,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.0705882, 0.0980392, 0.160784, 1)
+color = Color(0.025, 0.045, 0.085, 1)
 
 [node name="MenuArt" type="TextureRect" parent="."]
 layout_mode = 1
@@ -152,7 +152,7 @@ theme_override_constants/separation = 36
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.82, 0.39, 1)
 theme_override_colors/font_outline_color = Color(0.06, 0.08, 0.08, 0.95)
-theme_override_font_sizes/font_size = 142
+theme_override_font_sizes/font_size = 104
 theme_override_constants/outline_size = 10
 text = "AGE\nLOOP"
 horizontal_alignment = 1
@@ -190,10 +190,10 @@ layout_mode = 2
 
 [node name="PlayButton" type="Button" parent="TitleBlock"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(620, 170)
+custom_minimum_size = Vector2(540, 124)
 layout_mode = 2
 size_flags_horizontal = 4
-theme_override_font_sizes/font_size = 68
+theme_override_font_sizes/font_size = 44
 theme_override_styles/normal = SubResource("btn_normal")
 theme_override_styles/hover = SubResource("btn_hover")
 theme_override_styles/pressed = SubResource("btn_pressed")
@@ -202,10 +202,10 @@ text = "JUGAR"
 
 [node name="InventoryButton" type="Button" parent="TitleBlock"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(620, 130)
+custom_minimum_size = Vector2(540, 92)
 layout_mode = 2
 size_flags_horizontal = 4
-theme_override_font_sizes/font_size = 54
+theme_override_font_sizes/font_size = 32
 theme_override_styles/normal = SubResource("btn_normal")
 theme_override_styles/hover = SubResource("btn_hover")
 theme_override_styles/pressed = SubResource("btn_pressed")
@@ -217,7 +217,7 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(620, 110)
 layout_mode = 2
 size_flags_horizontal = 4
-theme_override_font_sizes/font_size = 48
+theme_override_font_sizes/font_size = 30
 theme_override_styles/normal = SubResource("btn_normal")
 theme_override_styles/hover = SubResource("btn_hover")
 theme_override_styles/pressed = SubResource("btn_pressed")
@@ -226,10 +226,10 @@ text = "EQUIPO"
 
 [node name="ResearchButton" type="Button" parent="TitleBlock"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(620, 130)
+custom_minimum_size = Vector2(540, 92)
 layout_mode = 2
 size_flags_horizontal = 4
-theme_override_font_sizes/font_size = 54
+theme_override_font_sizes/font_size = 32
 theme_override_styles/normal = SubResource("btn_normal")
 theme_override_styles/hover = SubResource("btn_hover")
 theme_override_styles/pressed = SubResource("btn_pressed")
@@ -238,10 +238,10 @@ text = "TECNOLOGIA"
 
 [node name="BaseButton" type="Button" parent="TitleBlock"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(620, 130)
+custom_minimum_size = Vector2(540, 92)
 layout_mode = 2
 size_flags_horizontal = 4
-theme_override_font_sizes/font_size = 54
+theme_override_font_sizes/font_size = 32
 theme_override_styles/normal = SubResource("btn_normal")
 theme_override_styles/hover = SubResource("btn_hover")
 theme_override_styles/pressed = SubResource("btn_pressed")
@@ -253,7 +253,7 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(620, 110)
 layout_mode = 2
 size_flags_horizontal = 4
-theme_override_font_sizes/font_size = 48
+theme_override_font_sizes/font_size = 30
 theme_override_styles/normal = SubResource("btn_normal")
 theme_override_styles/hover = SubResource("btn_hover")
 theme_override_styles/pressed = SubResource("btn_pressed")
@@ -320,7 +320,7 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(400, 110)
 layout_mode = 2
 size_flags_horizontal = 4
-theme_override_font_sizes/font_size = 48
+theme_override_font_sizes/font_size = 30
 text = "RECLAMAR"
 
 [node name="NotificationOverlay" type="Control" parent="."]
