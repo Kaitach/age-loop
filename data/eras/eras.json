@@ -5,7 +5,13 @@
     "order": 1,
     "unlock_cost": { "gold": 0, "science": 0 },
     "research_time_seconds": 0,
-    "requirements": []
+    "requirements": [],
+    "visual": {
+      "sky_dark": [0.045, 0.07, 0.13], "sky_light": [0.13, 0.22, 0.32],
+      "sun": [0.75, 0.87, 0.98], "hill": [0.08, 0.14, 0.18],
+      "ground": [0.085, 0.12, 0.16], "horizon": [0.36, 0.55, 0.43],
+      "dirt": [0.28, 0.35, 0.23], "accent": [0.35, 0.82, 0.45], "motif": "hills"
+    }
   },
   "bronze": {
     "id": "bronze",
@@ -13,7 +19,13 @@
     "order": 2,
     "unlock_cost": { "gold": 8000, "science": 100 },
     "research_time_seconds": 300,
-    "requirements": ["primitive_smelting"]
+    "requirements": ["primitive_smelting"],
+    "visual": {
+      "sky_dark": [0.16, 0.11, 0.09], "sky_light": [0.34, 0.22, 0.15],
+      "sun": [1.0, 0.69, 0.3], "hill": [0.22, 0.16, 0.13],
+      "ground": [0.20, 0.16, 0.13], "horizon": [0.84, 0.55, 0.25],
+      "dirt": [0.55, 0.36, 0.2], "accent": [1.0, 0.62, 0.18], "motif": "temple"
+    }
   },
   "iron": {
     "id": "iron",
@@ -21,6 +33,152 @@
     "order": 3,
     "unlock_cost": { "gold": 20000, "science": 300 },
     "research_time_seconds": 900,
-    "requirements": ["advanced_metallurgy"]
+    "requirements": ["bronze_smelting"],
+    "visual": {
+      "sky_dark": [0.08, 0.11, 0.14], "sky_light": [0.24, 0.30, 0.34],
+      "sun": [0.76, 0.86, 0.95], "hill": [0.14, 0.18, 0.21],
+      "ground": [0.13, 0.16, 0.18], "horizon": [0.48, 0.64, 0.72],
+      "dirt": [0.32, 0.40, 0.42], "accent": [0.4, 0.7, 0.95], "motif": "fortress"
+    }
+  },
+  "medieval": {
+    "id": "medieval",
+    "name": "Edad Medieval",
+    "order": 4,
+    "unlock_cost": { "gold": 40000, "science": 700 },
+    "research_time_seconds": 1800,
+    "requirements": ["medieval_military"],
+    "visual": {
+      "sky_dark": [0.08, 0.06, 0.16], "sky_light": [0.24, 0.18, 0.36],
+      "sun": [0.95, 0.69, 0.35], "hill": [0.13, 0.10, 0.22],
+      "ground": [0.12, 0.09, 0.16], "horizon": [0.62, 0.39, 0.66],
+      "dirt": [0.33, 0.23, 0.33], "accent": [0.95, 0.63, 0.25], "motif": "castle"
+    }
+  },
+  "renaissance": {
+    "id": "renaissance",
+    "name": "Renacimiento",
+    "order": 5,
+    "unlock_cost": { "gold": 80000, "science": 1500 },
+    "research_time_seconds": 2700,
+    "requirements": ["renaissance_science"],
+    "visual": {
+      "sky_dark": [0.13, 0.07, 0.18], "sky_light": [0.42, 0.19, 0.28],
+      "sun": [1.0, 0.75, 0.43], "hill": [0.20, 0.10, 0.22],
+      "ground": [0.16, 0.09, 0.15], "horizon": [0.82, 0.43, 0.43],
+      "dirt": [0.48, 0.25, 0.25], "accent": [1.0, 0.74, 0.31], "motif": "arches"
+    }
+  },
+  "industrial": {
+    "id": "industrial",
+    "name": "Era Industrial",
+    "order": 6,
+    "unlock_cost": { "gold": 160000, "science": 3000 },
+    "research_time_seconds": 3600,
+    "requirements": ["steam_industry"],
+    "visual": {
+      "sky_dark": [0.055, 0.07, 0.10], "sky_light": [0.23, 0.27, 0.30],
+      "sun": [1.0, 0.57, 0.22], "hill": [0.10, 0.12, 0.14],
+      "ground": [0.095, 0.10, 0.11], "horizon": [0.70, 0.34, 0.18],
+      "dirt": [0.28, 0.24, 0.20], "accent": [1.0, 0.43, 0.14], "motif": "factory"
+    }
+  },
+  "electrical": {
+    "id": "electrical",
+    "name": "Era Eléctrica",
+    "order": 7,
+    "unlock_cost": { "gold": 320000, "science": 6000 },
+    "research_time_seconds": 5400,
+    "requirements": ["electric_grid"],
+    "visual": {
+      "sky_dark": [0.025, 0.06, 0.15], "sky_light": [0.08, 0.28, 0.42],
+      "sun": [0.45, 0.9, 1.0], "hill": [0.04, 0.14, 0.22],
+      "ground": [0.035, 0.09, 0.14], "horizon": [0.15, 0.75, 0.9],
+      "dirt": [0.12, 0.35, 0.42], "accent": [0.3, 0.9, 1.0], "motif": "lightning"
+    }
+  },
+  "atomic": {
+    "id": "atomic",
+    "name": "Era Atómica",
+    "order": 8,
+    "unlock_cost": { "gold": 650000, "science": 12000 },
+    "research_time_seconds": 7200,
+    "requirements": ["atomic_research"],
+    "visual": {
+      "sky_dark": [0.07, 0.035, 0.16], "sky_light": [0.22, 0.12, 0.38],
+      "sun": [0.55, 1.0, 0.68], "hill": [0.10, 0.07, 0.22],
+      "ground": [0.08, 0.06, 0.14], "horizon": [0.32, 0.84, 0.60],
+      "dirt": [0.20, 0.34, 0.27], "accent": [0.48, 1.0, 0.63], "motif": "atom"
+    }
+  },
+  "digital": {
+    "id": "digital",
+    "name": "Era Digital",
+    "order": 9,
+    "unlock_cost": { "gold": 1300000, "science": 24000 },
+    "research_time_seconds": 9000,
+    "requirements": ["digital_computing"],
+    "visual": {
+      "sky_dark": [0.015, 0.035, 0.10], "sky_light": [0.04, 0.16, 0.30],
+      "sun": [0.32, 0.86, 1.0], "hill": [0.025, 0.10, 0.19],
+      "ground": [0.02, 0.065, 0.11], "horizon": [0.12, 0.70, 0.92],
+      "dirt": [0.08, 0.28, 0.38], "accent": [0.18, 0.82, 1.0], "motif": "grid"
+    }
+  },
+  "cybernetic": {
+    "id": "cybernetic",
+    "name": "Era Cibernética",
+    "order": 10,
+    "unlock_cost": { "gold": 2600000, "science": 48000 },
+    "research_time_seconds": 10800,
+    "requirements": ["cybernetics"],
+    "visual": {
+      "sky_dark": [0.09, 0.02, 0.15], "sky_light": [0.30, 0.05, 0.32],
+      "sun": [1.0, 0.28, 0.72], "hill": [0.16, 0.025, 0.20],
+      "ground": [0.10, 0.025, 0.14], "horizon": [0.94, 0.22, 0.72],
+      "dirt": [0.34, 0.10, 0.30], "accent": [1.0, 0.25, 0.75], "motif": "circuit"
+    }
+  },
+  "space": {
+    "id": "space",
+    "name": "Era Espacial",
+    "order": 11,
+    "unlock_cost": { "gold": 5200000, "science": 96000 },
+    "research_time_seconds": 12600,
+    "requirements": ["space_program"],
+    "visual": {
+      "sky_dark": [0.008, 0.012, 0.06], "sky_light": [0.035, 0.08, 0.24],
+      "sun": [0.68, 0.84, 1.0], "hill": [0.02, 0.04, 0.13],
+      "ground": [0.018, 0.025, 0.08], "horizon": [0.20, 0.44, 0.88],
+      "dirt": [0.08, 0.13, 0.30], "accent": [0.45, 0.78, 1.0], "motif": "planet"
+    }
+  },
+  "interstellar": {
+    "id": "interstellar",
+    "name": "Era Interestelar",
+    "order": 12,
+    "unlock_cost": { "gold": 10400000, "science": 192000 },
+    "research_time_seconds": 14400,
+    "requirements": ["interstellar_drive"],
+    "visual": {
+      "sky_dark": [0.025, 0.008, 0.10], "sky_light": [0.12, 0.03, 0.26],
+      "sun": [0.95, 0.46, 1.0], "hill": [0.07, 0.02, 0.18],
+      "ground": [0.035, 0.012, 0.11], "horizon": [0.58, 0.22, 0.86],
+      "dirt": [0.17, 0.07, 0.30], "accent": [0.86, 0.36, 1.0], "motif": "nebula"
+    }
+  },
+  "quantum": {
+    "id": "quantum",
+    "name": "Era Cuántica",
+    "order": 13,
+    "unlock_cost": { "gold": 20800000, "science": 384000 },
+    "research_time_seconds": 16200,
+    "requirements": ["quantum_field"],
+    "visual": {
+      "sky_dark": [0.008, 0.018, 0.08], "sky_light": [0.07, 0.08, 0.30],
+      "sun": [0.75, 0.45, 1.0], "hill": [0.025, 0.04, 0.16],
+      "ground": [0.012, 0.025, 0.10], "horizon": [0.36, 0.60, 1.0],
+      "dirt": [0.10, 0.18, 0.40], "accent": [0.55, 0.72, 1.0], "motif": "quantum"
+    }
   }
 }

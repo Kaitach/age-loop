@@ -5,5 +5,6 @@ const SPLASH_DURATION := 1.5
 
 func _ready() -> void:
 	SaveManager.load_game()
+	AudioManager.refresh_from_state()
 	await get_tree().create_timer(SPLASH_DURATION).timeout
 	get_tree().change_scene_to_file(MAIN_MENU_SCENE)

@@ -29,10 +29,15 @@ func get_cost(building_id: String) -> Dictionary:
 	var level := get_level(building_id)
 	var cost := {}
 	for currency in base_cost.keys():
-		cost[currency] = int(round(float(base_cost[currency]) * pow(growth, level)))
+		var raw := float(base_cost[currency]) * pow(growth, level)
+		if currency == "gold" or currency == "materials":
+			raw *= maxf(0.0, 1.0 + GameState.get_effect_modifier("building_cost"))
+		cost[currency] = int(round(raw))
 	return cost
 
 func can_upgrade(building_id: String) -> bool:
+	if not is_unlocked(building_id):
+		return false
 	if is_maxed(building_id):
 		return false
 	return Economy.can_afford(get_cost(building_id))
@@ -58,9 +63,21 @@ func get_bonus(stat_key: String) -> float:
 
 func calculate_passive_income() -> Dictionary:
 	return {
-		"gold_per_sec": get_bonus("gold_per_min") / 60.0,
-		"materials_per_sec": get_bonus("materials_per_min") / 60.0,
+		"gold_per_sec": get_bonus("gold_per_min") / 60.0 * (1.0 + GameState.get_effect_modifier("gold_per_second")),
+		"materials_per_sec": get_bonus("materials_per_min") / 60.0 * (1.0 + GameState.get_effect_modifier("materials_per_minute")),
+		"science_per_sec": get_bonus("science_per_sec") / 60.0 * (1.0 + GameState.get_effect_modifier("science_per_second")),
 	}
+
+func is_unlocked(building_id: String) -> bool:
+	var def: Dictionary = DataLoader.load_json("buildings/buildings.json").get(building_id, {})
+	var required := String(def.get("required_technology", ""))
+	if required.is_empty():
+		return true
+	return ResearchManager.is_completed(required) or GameState.has_unlocked_content("buildings", building_id)
+
+func unlock_requirement(building_id: String) -> String:
+	var def: Dictionary = DataLoader.load_json("buildings/buildings.json").get(building_id, {})
+	return String(def.get("required_technology", ""))
 
 func _on_passive_tick() -> void:
 	var income := calculate_passive_income()

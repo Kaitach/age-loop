@@ -1,0 +1,16 @@
+{
+  "wolf": {
+    "id": "wolf",
+    "name": "Lobo compañero",
+    "description": "Una mascota fiel que pelea a tu lado y evoluciona con cada nivel.",
+    "base_health": 120,
+    "base_damage": 13,
+    "attack_speed": 1.15,
+    "attack_range": 92,
+    "movement_speed": 205,
+    "body_size": 78,
+    "level_health": 10,
+    "level_damage": 2,
+    "level_speed": 0.7
+  }
+}

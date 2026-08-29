@@ -3,7 +3,8 @@ extends Node
 signal offline_rewards_claimed(rewards: Dictionary)
 
 func get_max_offline_seconds() -> int:
-	return int(DataLoader.get_balance().get("max_offline_hours", 8)) * 3600
+	var base_hours := float(DataLoader.get_balance().get("max_offline_hours", 8))
+	return int(round(base_hours * (1.0 + GameState.get_effect_modifier("offline_time_cap")))) * 3600
 
 func get_offline_rewards() -> Dictionary:
 	var now := int(Time.get_unix_time_from_system())
@@ -18,7 +19,7 @@ func get_offline_rewards() -> Dictionary:
 		"elapsed": elapsed,
 		"gold": int(floor(float(income.get("gold_per_sec", 0.0)) * elapsed)),
 		"materials": int(floor(float(income.get("materials_per_sec", 0.0)) * elapsed)),
-		"science": 0,
+		"science": int(floor(float(income.get("science_per_sec", 0.0)) * elapsed)),
 	}
 
 func claim(rewards: Dictionary) -> void:

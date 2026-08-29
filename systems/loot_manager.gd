@@ -7,7 +7,7 @@ const BASE_SELL_VALUE := 8
 const SELL_PER_LEVEL := 3
 
 func roll_drop(loot_chance: float, world: int, wave: int, is_boss: bool = false) -> Dictionary:
-	if randf() > loot_chance:
+	if GameRng.randf() > loot_chance:
 		return {}
 	var template_id := _pick_template()
 	if template_id == "":
@@ -20,10 +20,11 @@ func roll_drop(loot_chance: float, world: int, wave: int, is_boss: bool = false)
 	var level := _roll_level(gw, is_boss)
 	var level_mult := 1.0 + LEVEL_MULT_PER_LEVEL * (level - 1)
 	return {
-		"id": "%s_%d" % [template_id, randi()],
+		"id": "%s_%d" % [template_id, GameRng.randi()],
 		"template_id": template_id,
 		"name": String(template.get("name", template_id)),
 		"slot": String(template.get("slot", "weapon")),
+		"attack_type": String(template.get("attack_type", "")),
 		"level": level,
 		"rarity": rarity_id,
 		"stats": _roll_base_stats(template, level_mult, float(rarity.get("mult", 1.0))),
@@ -36,7 +37,7 @@ func roll_rarity() -> String:
 	var total_weight := 0.0
 	for rarity_id in rarities.keys():
 		total_weight += float(rarities[rarity_id].get("weight", 0.0))
-	var roll := randf() * total_weight
+	var roll := GameRng.randf() * total_weight
 	for rarity_id in rarities.keys():
 		roll -= float(rarities[rarity_id].get("weight", 0.0))
 		if roll <= 0.0:
@@ -64,18 +65,27 @@ func _pick_template() -> String:
 	var templates: Dictionary = items_data.get("templates", {})
 	var pool: Array = []
 	for template_id in templates.keys():
-		if String(templates[template_id].get("era", "")) == GameState.current_era:
+		var template: Dictionary = templates[template_id]
+		var required := String(template.get("required_technology", ""))
+		if String(template.get("era", "")) == GameState.current_era and (required.is_empty() or ResearchManager.is_completed(required) or GameState.has_unlocked_content("items", String(template_id))):
 			pool.append(template_id)
 	if pool.is_empty():
-		pool = templates.keys()
+		for template_id in templates.keys():
+			var fallback_template: Dictionary = templates[template_id]
+			var required_fallback := String(fallback_template.get("required_technology", ""))
+			var era_order := int(DataLoader.load_json("eras/eras.json").get(String(fallback_template.get("era", "")), {}).get("order", 99))
+			var current_order := int(DataLoader.load_json("eras/eras.json").get(GameState.current_era, {}).get("order", 1))
+			if era_order <= current_order and (required_fallback.is_empty() or GameState.has_unlocked_content("items", String(template_id))):
+				pool.append(template_id)
 	if pool.is_empty():
 		return ""
-	return pool.pick_random()
+	return String(GameRng.pick(pool))
 
 func _roll_level(global_wave: int, is_boss: bool) -> int:
+	var technology_bonus := int(round(GameState.get_effect_addition("loot_level_bonus")))
 	if is_boss:
-		return clampi(global_wave + randi_range(0, BOSS_LEVEL_BONUS), 1, 99)
-	return clampi(global_wave + randi_range(-LEVEL_VARIANCE, LEVEL_VARIANCE), 1, 99)
+		return clampi(global_wave + GameRng.randi_range(0, BOSS_LEVEL_BONUS) + technology_bonus, 1, 99)
+	return clampi(global_wave + GameRng.randi_range(-LEVEL_VARIANCE, LEVEL_VARIANCE) + technology_bonus, 1, 99)
 
 func _roll_base_stats(template: Dictionary, level_mult: float, rarity_mult: float) -> Dictionary:
 	var stats := {}
@@ -92,9 +102,9 @@ func _roll_modifiers(items_data: Dictionary, template: Dictionary, rarity: Dicti
 	for i in range(count):
 		if allowed.is_empty():
 			break
-		var stat_key: String = allowed[randi() % allowed.size()]
+		var stat_key: String = allowed[GameRng.randi_range(0, allowed.size() - 1)]
 		var value_range: Array = ranges.get(stat_key, [1, 1])
-		var raw := randf_range(float(value_range[0]), float(value_range[1])) * level_mult
+		var raw := GameRng.randf_range(float(value_range[0]), float(value_range[1])) * level_mult
 		modifiers.append({ "stat": stat_key, "value": _format_stat(stat_key, raw) })
 	return modifiers
 

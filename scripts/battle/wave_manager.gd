@@ -60,6 +60,10 @@ static func calculate_rewards(world: int, wave: int) -> Dictionary:
 	var gold_mult := reward_scale_for(world, wave, "gold_growth", 1.10)
 	var sci_mult := reward_scale_for(world, wave, "science_growth", 1.07)
 	var mat_mult := reward_scale_for(world, wave, "materials_growth", 1.08)
+	var gs := _game_state()
+	gold_mult *= 1.0 + gs.get_effect_modifier("gold_reward")
+	sci_mult *= 1.0 + gs.get_effect_modifier("science_reward")
+	mat_mult *= 1.0 + gs.get_effect_modifier("materials_reward")
 	var mults := { "gold": gold_mult, "science": sci_mult, "materials": mat_mult }
 	var wave_def := DataLoader.get_wave_def(world, wave)
 	for group in wave_def.get("groups", []):
@@ -73,6 +77,15 @@ static func calculate_rewards(world: int, wave: int) -> Dictionary:
 		for key in totals.keys():
 			totals[key] += int(round(float(boss_rewards.get(key, 0)) * mults[key]))
 	return totals
+
+static func recommended_power(world: int, wave: int) -> int:
+	var balance := DataLoader.get_balance()
+	var base := float(balance.get("recommended_power_base", 180.0))
+	var growth := float(balance.get("recommended_power_growth", 1.14))
+	return int(round(base * pow(growth, global_wave_number(world, wave) - 1)))
+
+static func _game_state() -> Node:
+	return (Engine.get_main_loop() as SceneTree).root.get_node("/root/GameState")
 
 func start(world: int, wave: int) -> void:
 	current_world = world
@@ -93,4 +106,4 @@ func finished_spawning() -> bool:
 	return _running and _queue.is_empty()
 
 func _random_spawn_position() -> Vector2:
-	return Vector2(randf_range(SPAWN_X_MIN, SPAWN_X_MAX), ENEMY_SPAWN_Y)
+	return Vector2(GameRng.randf_range(SPAWN_X_MIN, SPAWN_X_MAX), ENEMY_SPAWN_Y)

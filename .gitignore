@@ -1,5 +1,8 @@
 .godot/
 *.tmp
-builds/
+builds/*
+!builds/.gdignore
+android/*
+!android/.gdignore
 export_presets.cfg.secret
 *.keystore

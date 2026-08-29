@@ -1,0 +1,53 @@
+{
+  "militia": {
+    "name": "Milicia",
+    "era": "prehistoric",
+    "damage": 8,
+    "attack_speed": 0.9,
+    "attack_range": 95.0,
+    "attack_type": "melee",
+    "movement_speed": 150.0,
+    "max_health": 82,
+    "body_size": 58.0,
+    "body_color": [0.48, 0.38, 0.22]
+  },
+  "archer": {
+    "name": "Arquero",
+    "era": "prehistoric",
+    "required_technology": "archery",
+    "damage": 11,
+    "attack_speed": 1.0,
+    "attack_range": 400.0,
+    "attack_type": "ranged",
+    "movement_speed": 170.0,
+    "max_health": 70,
+    "body_size": 58.0,
+    "body_color": [0.3, 0.6, 0.85]
+  },
+  "heavy": {
+    "name": "Infantería pesada",
+    "era": "bronze",
+    "required_technology": "shield",
+    "damage": 16,
+    "attack_speed": 0.7,
+    "attack_range": 110.0,
+    "attack_type": "melee",
+    "movement_speed": 145.0,
+    "max_health": 120,
+    "body_size": 64.0,
+    "body_color": [0.55, 0.55, 0.65]
+  },
+  "crossbow": {
+    "name": "Ballestero",
+    "era": "iron",
+    "required_technology": "crossbow",
+    "damage": 20,
+    "attack_speed": 0.8,
+    "attack_range": 460.0,
+    "attack_type": "ranged",
+    "movement_speed": 175.0,
+    "max_health": 80,
+    "body_size": 60.0,
+    "body_color": [0.65, 0.5, 0.3]
+  }
+}

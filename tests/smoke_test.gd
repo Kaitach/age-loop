@@ -20,6 +20,11 @@ func _process(_delta: float) -> bool:
 				node.take_damage(9999)
 			if _battle.did_win():
 				_pass("victoria detectada tras eliminar enemigos")
+				var game_state := root.get_node("/root/GameState")
+				if int(game_state.stats.get("enemies_killed", 0)) > 0:
+					_pass("las muertes de enemigos actualizan estadísticas y loot")
+				else:
+					return _fail("las muertes de enemigos no llegan al battle manager")
 				_battle.queue_free()
 				_phase = "defeat_setup"
 				_frames = 0

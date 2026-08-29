@@ -29,6 +29,7 @@
   },
   "wall": {
     "name": "Muralla",
+    "required_technology": "walls",
     "max_level": 20,
     "base_cost": { "gold": 150, "materials": 40 },
     "cost_growth": 1.35,

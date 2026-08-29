@@ -1,13 +1,21 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=9 format=3]
 
 [ext_resource type="Script" path="res://scenes/menu/main_menu.gd" id="1"]
+[ext_resource type="Texture2D" path="res://assets/ui/menu_background.png" id="2"]
 
 [sub_resource type="StyleBoxFlat" id="btn_normal"]
 content_margin_left = 40.0
 content_margin_top = 24.0
 content_margin_right = 40.0
 content_margin_bottom = 24.0
-bg_color = Color(0.184314, 0.478431, 0.858824, 1)
+bg_color = Color(0.035, 0.15, 0.32, 0.96)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.88, 0.65, 0.23, 0.95)
+shadow_color = Color(0.01, 0.02, 0.04, 0.68)
+shadow_size = 12
 corner_radius_top_left = 28
 corner_radius_top_right = 28
 corner_radius_bottom_right = 28
@@ -18,7 +26,14 @@ content_margin_left = 40.0
 content_margin_top = 24.0
 content_margin_right = 40.0
 content_margin_bottom = 24.0
-bg_color = Color(0.266667, 0.572549, 0.972549, 1)
+bg_color = Color(0.07, 0.28, 0.53, 0.98)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 0.78, 0.32, 1)
+shadow_color = Color(0.01, 0.02, 0.04, 0.72)
+shadow_size = 14
 corner_radius_top_left = 28
 corner_radius_top_right = 28
 corner_radius_bottom_right = 28
@@ -29,11 +44,63 @@ content_margin_left = 40.0
 content_margin_top = 24.0
 content_margin_right = 40.0
 content_margin_bottom = 24.0
-bg_color = Color(0.121569, 0.356863, 0.686275, 1)
+bg_color = Color(0.025, 0.09, 0.20, 0.98)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.66, 0.45, 0.16, 1)
+shadow_color = Color(0.01, 0.02, 0.04, 0.72)
+shadow_size = 8
 corner_radius_top_left = 28
 corner_radius_top_right = 28
 corner_radius_bottom_right = 28
 corner_radius_bottom_left = 28
+
+[sub_resource type="StyleBoxFlat" id="notification_panel"]
+content_margin_left = 54.0
+content_margin_top = 48.0
+content_margin_right = 54.0
+content_margin_bottom = 48.0
+bg_color = Color(0.075, 0.105, 0.17, 0.99)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.9, 0.68, 0.25, 0.72)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+
+[sub_resource type="StyleBoxFlat" id="notification_button"]
+content_margin_left = 36.0
+content_margin_top = 18.0
+content_margin_right = 36.0
+content_margin_bottom = 18.0
+bg_color = Color(0.184314, 0.478431, 0.858824, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[sub_resource type="StyleBoxFlat" id="next_era_panel"]
+content_margin_left = 36.0
+content_margin_top = 22.0
+content_margin_right = 36.0
+content_margin_bottom = 22.0
+bg_color = Color(0.045, 0.065, 0.08, 0.86)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.88, 0.65, 0.23, 0.95)
+corner_radius_top_left = 22
+corner_radius_top_right = 22
+corner_radius_bottom_right = 22
+corner_radius_bottom_left = 22
+shadow_color = Color(0.01, 0.02, 0.03, 0.75)
+shadow_size = 14
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -53,6 +120,19 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.0705882, 0.0980392, 0.160784, 1)
 
+[node name="MenuArt" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("2")
+expand_mode = 1
+stretch_mode = 0
+modulate = Color(1, 1, 1, 0.92)
+
 [node name="TitleBlock" type="VBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 8
@@ -70,17 +150,37 @@ theme_override_constants/separation = 36
 
 [node name="Title" type="Label" parent="TitleBlock"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.937255, 0.956863, 1, 1)
-theme_override_font_sizes/font_size = 150
-text = "AGE LOOP"
+theme_override_colors/font_color = Color(1, 0.82, 0.39, 1)
+theme_override_colors/font_outline_color = Color(0.06, 0.08, 0.08, 0.95)
+theme_override_font_sizes/font_size = 142
+theme_override_constants/outline_size = 10
+text = "AGE\nLOOP"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="VersionLabel" type="Label" parent="TitleBlock"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.6, 0.68, 0.8, 1)
-theme_override_font_sizes/font_size = 48
-text = "Version 1.0.4"
+theme_override_colors/font_color = Color(0.92, 0.89, 0.78, 1)
+theme_override_colors/font_outline_color = Color(0.05, 0.07, 0.08, 0.95)
+theme_override_font_sizes/font_size = 34
+theme_override_constants/outline_size = 6
+text = "VERSION 1.1.0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="NextEraPanel" type="PanelContainer" parent="TitleBlock"]
+custom_minimum_size = Vector2(620, 145)
+layout_mode = 2
+theme_override_styles/panel = SubResource("next_era_panel")
+
+[node name="NextEraLabel" type="Label" parent="TitleBlock/NextEraPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.82, 0.3, 1)
+theme_override_colors/font_outline_color = Color(0.08, 0.05, 0.04, 0.9)
+theme_override_font_sizes/font_size = 34
+theme_override_constants/outline_size = 4
+text = "PRÓXIMA ERA: MEDIEVAL\nPróximamente"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -112,6 +212,18 @@ theme_override_styles/pressed = SubResource("btn_pressed")
 theme_override_styles/focus = SubResource("btn_hover")
 text = "INVENTARIO"
 
+[node name="EquipmentButton" type="Button" parent="TitleBlock"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(620, 110)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 48
+theme_override_styles/normal = SubResource("btn_normal")
+theme_override_styles/hover = SubResource("btn_hover")
+theme_override_styles/pressed = SubResource("btn_pressed")
+theme_override_styles/focus = SubResource("btn_hover")
+text = "EQUIPO"
+
 [node name="ResearchButton" type="Button" parent="TitleBlock"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(620, 130)
@@ -135,6 +247,18 @@ theme_override_styles/hover = SubResource("btn_hover")
 theme_override_styles/pressed = SubResource("btn_pressed")
 theme_override_styles/focus = SubResource("btn_hover")
 text = "BASE"
+
+[node name="SettingsButton" type="Button" parent="TitleBlock"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(620, 110)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 48
+theme_override_styles/normal = SubResource("btn_normal")
+theme_override_styles/hover = SubResource("btn_hover")
+theme_override_styles/pressed = SubResource("btn_pressed")
+theme_override_styles/focus = SubResource("btn_hover")
+text = "AJUSTES"
 
 [node name="OfflinePanel" type="CenterContainer" parent="."]
 unique_name_in_owner = true
@@ -183,6 +307,14 @@ theme_override_font_sizes/font_size = 42
 text = "MAT +0"
 horizontal_alignment = 1
 
+[node name="OfflineScienceLabel" type="Label" parent="OfflinePanel/Panel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.35, 0.8, 0.95, 1)
+theme_override_font_sizes/font_size = 42
+text = "CIENCIA +0"
+horizontal_alignment = 1
+
 [node name="ClaimButton" type="Button" parent="OfflinePanel/Panel/VBox"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(400, 110)
@@ -190,3 +322,78 @@ layout_mode = 2
 size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 48
 text = "RECLAMAR"
+
+[node name="NotificationOverlay" type="Control" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+
+[node name="Dim" type="ColorRect" parent="NotificationOverlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.01, 0.018, 0.04, 0.84)
+
+[node name="Center" type="CenterContainer" parent="NotificationOverlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="PanelContainer" parent="NotificationOverlay/Center"]
+custom_minimum_size = Vector2(800, 470)
+layout_mode = 2
+theme_override_styles/panel = SubResource("notification_panel")
+
+[node name="VBox" type="VBoxContainer" parent="NotificationOverlay/Center/Panel"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="NotificationIcon" type="Label" parent="NotificationOverlay/Center/Panel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 88
+text = "✓"
+horizontal_alignment = 1
+
+[node name="NotificationTitle" type="Label" parent="NotificationOverlay/Center/Panel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.94, 0.96, 1, 1)
+theme_override_font_sizes/font_size = 42
+text = "PROGRESO COMPLETADO"
+horizontal_alignment = 1
+
+[node name="NotificationBody" type="Label" parent="NotificationOverlay/Center/Panel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0.67, 0.75, 0.9, 1)
+theme_override_font_sizes/font_size = 34
+text = "La investigación se completó."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="NotificationContinue" type="Button" parent="NotificationOverlay/Center/Panel/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(350, 92)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 38
+theme_override_styles/normal = SubResource("notification_button")
+theme_override_styles/hover = SubResource("btn_hover")
+theme_override_styles/pressed = SubResource("btn_pressed")
+text = "CONTINUAR"

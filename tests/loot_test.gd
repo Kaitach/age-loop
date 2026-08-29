@@ -18,6 +18,11 @@ func _run_checks() -> void:
 	gs.inventory = []
 	gs.equipped_items = {}
 	gs.upgrades = {}
+	GameRng.set_seed(1337)
+	var first_rng_value := GameRng.randi()
+	GameRng.set_seed(1337)
+	_check(GameRng.randi() == first_rng_value, "RNG con semilla reproduce la misma secuencia")
+	GameRng.randomize()
 
 	var counts := {}
 	var samples := 3000
@@ -57,7 +62,10 @@ func _run_checks() -> void:
 	_check(inv.equip_item("test_1"), "equip_item funciona")
 	_check(gs.equipped_items["weapon"]["id"] == "test_1", "item queda equipado en su slot")
 
-	var player := Player.new()
+	# Cargar el script despues de que los autoloads esten activos evita que el
+	# lanzador de tests directo resuelva GameState antes de tiempo.
+	var player_script := load("res://scripts/battle/player.gd") as Script
+	var player = player_script.new()
 	player.base_damage = 14
 	player.base_max_health = 100
 	player.attack_speed = 1.2
@@ -79,9 +87,10 @@ func _run_checks() -> void:
 	for i in range(inv.CAPACITY):
 		inv.add_item({ "id": "filler_%d" % i, "sell_value": 1, "rarity": "common" })
 	var overflow: String = inv.add_item({ "id": "extra", "sell_value": 9, "rarity": "rare" })
-	_check(overflow == "sold_full", "inventario lleno auto-vende y avisa estado")
+	_check(overflow == "pending_full", "inventario lleno conserva el objeto pendiente")
 	_check(gs.inventory.size() == inv.CAPACITY, "capacidad respetada")
-	_check(int(gs.gold) == gold_before + 23 + 9, "el item vendido por overflow pago oro")
+	_check(gs.pending_items.size() == 1, "el objeto pendiente no se pierde")
+	_check(int(gs.gold) == gold_before + 23, "el overflow no vende silenciosamente")
 
 	gs.inventory = []
 	print("[TEST] PASS: todas las verificaciones de loot ok")

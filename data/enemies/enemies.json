@@ -76,6 +76,7 @@
       0.28
     ],
     "is_boss": true,
+    "behavior": "area_attack",
     "rewards": {
       "gold": 100,
       "science": 14,
@@ -97,6 +98,7 @@
       0.85
     ],
     "is_boss": false,
+    "behavior": "normal",
     "rewards": {
       "gold": 10,
       "science": 1,
@@ -118,6 +120,7 @@
       0.2
     ],
     "is_boss": false,
+    "behavior": "enrage",
     "rewards": {
       "gold": 11,
       "science": 1,
@@ -160,6 +163,7 @@
       0.2
     ],
     "is_boss": true,
+    "behavior": "summoner",
     "rewards": {
       "gold": 150,
       "science": 20,
@@ -181,6 +185,7 @@
       0.55
     ],
     "is_boss": true,
+    "behavior": "phase_enrage",
     "rewards": {
       "gold": 220,
       "science": 30,

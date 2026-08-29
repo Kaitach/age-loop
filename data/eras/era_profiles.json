@@ -1,0 +1,119 @@
+{
+  "prehistoric": {
+    "mechanic_id": "pack_hunt",
+    "mechanic_name": "Caza en manada",
+    "mechanic_description": "Los enemigos se mueven más rápido cuando luchan juntos.",
+    "mechanic_values": { "group_size": 2, "speed_bonus": 0.1 },
+    "transition_color": [0.35, 0.82, 0.45, 1.0],
+    "transition_duration": 2.6,
+    "ambient_particles": "embers"
+  },
+  "bronze": {
+    "mechanic_id": "shield_wall",
+    "mechanic_name": "Muro de escudos",
+    "mechanic_description": "Los enemigos blindados reducen el primer impacto recibido.",
+    "mechanic_values": { "damage_reduction": 0.5 },
+    "transition_color": [1.0, 0.62, 0.18, 1.0],
+    "transition_duration": 2.6,
+    "ambient_particles": "dust"
+  },
+  "iron": {
+    "mechanic_id": "iron_enrage",
+    "mechanic_name": "Furia de hierro",
+    "mechanic_description": "Los enemigos heridos aceleran y atacan con más fuerza.",
+    "mechanic_values": { "health_threshold": 0.4, "speed_bonus": 0.7, "attack_bonus": 0.3 },
+    "transition_color": [0.4, 0.7, 0.95, 1.0],
+    "transition_duration": 2.6,
+    "ambient_particles": "sparks"
+  },
+  "medieval": {
+    "mechanic_id": "siege",
+    "mechanic_name": "Asedio",
+    "mechanic_description": "Cada cierto tiempo aparece una amenaza que apunta a la base.",
+    "mechanic_values": { "interval": 9.0, "telegraph_time": 2.4, "base_damage_ratio": 0.08 },
+    "transition_color": [0.95, 0.63, 0.25, 1.0],
+    "transition_duration": 2.6,
+    "ambient_particles": "leaves"
+  },
+  "renaissance": {
+    "mechanic_id": "volley",
+    "mechanic_name": "Fuego coordinado",
+    "mechanic_description": "Los enemigos a distancia preparan ataques sincronizados.",
+    "mechanic_values": { "interval": 7.0, "telegraph_time": 1.8, "damage_bonus": 0.25 },
+    "transition_color": [1.0, 0.74, 0.31, 1.0],
+    "transition_duration": 2.6,
+    "ambient_particles": "pollen"
+  },
+  "industrial": {
+    "mechanic_id": "overheat",
+    "mechanic_name": "Sobrecalentamiento",
+    "mechanic_description": "Las máquinas enemigas liberan ráfagas de velocidad y daño.",
+    "mechanic_values": { "interval": 12.0, "duration": 3.0, "speed_bonus": 0.2, "attack_bonus": 0.2 },
+    "transition_color": [1.0, 0.43, 0.14, 1.0],
+    "transition_duration": 2.6,
+    "ambient_particles": "smoke"
+  },
+  "electrical": {
+    "mechanic_id": "shock",
+    "mechanic_name": "Descarga eléctrica",
+    "mechanic_description": "Los impactos enemigos ralentizan temporalmente al jugador y sus unidades.",
+    "mechanic_values": { "chance": 0.35, "duration": 0.8, "slow": 0.45 },
+    "transition_color": [0.3, 0.9, 1.0, 1.0],
+    "transition_duration": 2.6,
+    "ambient_particles": "electric"
+  },
+  "atomic": {
+    "mechanic_id": "radiation",
+    "mechanic_name": "Zona de radiación",
+    "mechanic_description": "Los enemigos especiales dejan una zona que daña durante unos segundos.",
+    "mechanic_values": { "duration": 3.0, "damage_per_second": 2.0 },
+    "transition_color": [0.48, 1.0, 0.63, 1.0],
+    "transition_duration": 2.6,
+    "ambient_particles": "radioactive"
+  },
+  "digital": {
+    "mechanic_id": "firewall",
+    "mechanic_name": "Firewall",
+    "mechanic_description": "Algunos enemigos aparecen protegidos por un escudo temporal.",
+    "mechanic_values": { "shield_ratio": 0.15, "shield_duration": 2.5 },
+    "transition_color": [0.18, 0.82, 1.0, 1.0],
+    "transition_duration": 2.6,
+    "ambient_particles": "data"
+  },
+  "cybernetic": {
+    "mechanic_id": "dash",
+    "mechanic_name": "Impulso cibernético",
+    "mechanic_description": "Los enemigos élite realizan desplazamientos rápidos y telegráficos.",
+    "mechanic_values": { "interval": 6.0, "distance": 180.0, "invulnerable_time": 0.4 },
+    "transition_color": [1.0, 0.25, 0.75, 1.0],
+    "transition_duration": 2.6,
+    "ambient_particles": "circuit"
+  },
+  "space": {
+    "mechanic_id": "orbital",
+    "mechanic_name": "Ataque orbital",
+    "mechanic_description": "Una zona marcada recibe un impacto orbital si no se evita a tiempo.",
+    "mechanic_values": { "interval": 10.0, "telegraph_time": 2.2, "damage_ratio": 0.12 },
+    "transition_color": [0.45, 0.78, 1.0, 1.0],
+    "transition_duration": 2.6,
+    "ambient_particles": "stars"
+  },
+  "interstellar": {
+    "mechanic_id": "teleport",
+    "mechanic_name": "Salto interestelar",
+    "mechanic_description": "Los enemigos especiales se teletransportan y cambian el ritmo del frente.",
+    "mechanic_values": { "interval": 8.0, "distance": 220.0 },
+    "transition_color": [0.86, 0.36, 1.0, 1.0],
+    "transition_duration": 2.6,
+    "ambient_particles": "nebula"
+  },
+  "quantum": {
+    "mechanic_id": "time_fracture",
+    "mechanic_name": "Fractura temporal",
+    "mechanic_description": "El campo de batalla se ralentiza durante una ventana de distorsión.",
+    "mechanic_values": { "interval": 10.0, "duration": 2.0, "time_scale": 0.45 },
+    "transition_color": [0.55, 0.72, 1.0, 1.0],
+    "transition_duration": 2.6,
+    "ambient_particles": "quantum"
+  }
+}

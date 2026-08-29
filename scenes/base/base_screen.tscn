@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=6 format=3]
 
 [ext_resource type="Script" path="res://scenes/base/base_screen.gd" id="1"]
+[ext_resource type="Texture2D" path="res://assets/ui/menu_background.png" id="2"]
 
 [sub_resource type="StyleBoxFlat" id="btn_normal"]
 content_margin_left = 30.0
@@ -69,6 +70,19 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.0509804, 0.0705882, 0.121569, 1)
 
+[node name="BackgroundArt" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("2")
+expand_mode = 1
+stretch_mode = 0
+modulate = Color(0.55, 0.72, 0.58, 0.18)
+
 [node name="MainVBox" type="VBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
@@ -96,6 +110,16 @@ theme_override_colors/font_color = Color(0.9, 0.78, 0.4, 1)
 theme_override_font_sizes/font_size = 34
 text = "ORO 0    CIENCIA 0    MAT 0"
 horizontal_alignment = 1
+
+[node name="HintLabel" type="Label" parent="MainVBox"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.82, 0.35, 1)
+theme_override_font_sizes/font_size = 28
+text = ""
+horizontal_alignment = 1
+autowrap_mode = 2
 
 [node name="Scroll" type="ScrollContainer" parent="MainVBox"]
 layout_mode = 2

@@ -104,7 +104,7 @@
     "effects": [
       {
         "type": "unlock_building",
-        "value": "hut"
+        "value": "housing"
       }
     ]
   },
@@ -144,8 +144,8 @@
     ],
     "effects": [
       {
-        "type": "unlock_era",
-        "value": "bronze"
+        "type": "unlock_item",
+        "value": "bronze_armor"
       }
     ]
   },
@@ -164,7 +164,7 @@
     "effects": [
       {
         "type": "unlock_building",
-        "value": "bronze_forge"
+        "value": "forge"
       }
     ]
   },
@@ -201,9 +201,9 @@
     ],
     "effects": [
       {
-        "type": "stat_multiplier",
+        "type": "stat_add",
         "target": "armor",
-        "value": 0.08
+        "value": 8
       }
     ]
   },
@@ -222,8 +222,8 @@
     ],
     "effects": [
       {
-        "type": "unlock_building",
-        "value": "archer_unit"
+        "type": "unlock_unit",
+        "value": "archer"
       }
     ]
   },
@@ -301,8 +301,9 @@
     ],
     "effects": [
       {
-        "type": "unlock_building",
-        "value": "iron_forge"
+        "type": "stat_add",
+        "target": "loot_level_bonus",
+        "value": 1
       }
     ]
   },
@@ -358,8 +359,8 @@
     ],
     "effects": [
       {
-        "type": "unlock_building",
-        "value": "crossbow_unit"
+        "type": "unlock_unit",
+        "value": "crossbow"
       }
     ]
   },
@@ -377,7 +378,7 @@
     ],
     "effects": [
       {
-        "type": "stat_multiplier",
+        "type": "stat_add",
         "target": "max_units",
         "value": 1
       }
@@ -438,9 +439,119 @@
     ],
     "effects": [
       {
-        "type": "unlock_era",
+        "type": "set_future_era",
         "value": "medieval"
       }
+    ]
+  },
+  "medieval_military": {
+    "id": "medieval_military",
+    "name": "Caballería y castillos",
+    "era": "iron",
+    "cost": { "gold": 18000, "science": 500 },
+    "duration_seconds": 1200,
+    "requirements": ["engineering"],
+    "effects": [
+      { "type": "stat_multiplier", "target": "gold_reward", "value": 0.18 }
+    ]
+  },
+  "renaissance_science": {
+    "id": "renaissance_science",
+    "name": "Método científico",
+    "era": "medieval",
+    "cost": { "gold": 50000, "science": 1100 },
+    "duration_seconds": 1800,
+    "requirements": ["medieval_military"],
+    "effects": [
+      { "type": "stat_multiplier", "target": "science_reward", "value": 0.2 }
+    ]
+  },
+  "steam_industry": {
+    "id": "steam_industry",
+    "name": "Máquina de vapor",
+    "era": "renaissance",
+    "cost": { "gold": 100000, "science": 2200 },
+    "duration_seconds": 2400,
+    "requirements": ["renaissance_science"],
+    "effects": [
+      { "type": "stat_multiplier", "target": "gold_per_second", "value": 0.25 }
+    ]
+  },
+  "electric_grid": {
+    "id": "electric_grid",
+    "name": "Red eléctrica",
+    "era": "industrial",
+    "cost": { "gold": 220000, "science": 4500 },
+    "duration_seconds": 3000,
+    "requirements": ["steam_industry"],
+    "effects": [
+      { "type": "stat_multiplier", "target": "materials_per_minute", "value": 0.3 }
+    ]
+  },
+  "atomic_research": {
+    "id": "atomic_research",
+    "name": "Investigación atómica",
+    "era": "electrical",
+    "cost": { "gold": 450000, "science": 9000 },
+    "duration_seconds": 3600,
+    "requirements": ["electric_grid"],
+    "effects": [
+      { "type": "stat_multiplier", "target": "damage", "value": 0.12 }
+    ]
+  },
+  "digital_computing": {
+    "id": "digital_computing",
+    "name": "Computación digital",
+    "era": "atomic",
+    "cost": { "gold": 900000, "science": 18000 },
+    "duration_seconds": 4200,
+    "requirements": ["atomic_research"],
+    "effects": [
+      { "type": "stat_multiplier", "target": "offline_time_cap", "value": 0.35 }
+    ]
+  },
+  "cybernetics": {
+    "id": "cybernetics",
+    "name": "Cibernética",
+    "era": "digital",
+    "cost": { "gold": 1800000, "science": 36000 },
+    "duration_seconds": 4800,
+    "requirements": ["digital_computing"],
+    "effects": [
+      { "type": "stat_multiplier", "target": "damage", "value": 0.18 }
+    ]
+  },
+  "space_program": {
+    "id": "space_program",
+    "name": "Programa espacial",
+    "era": "cybernetic",
+    "cost": { "gold": 3600000, "science": 72000 },
+    "duration_seconds": 5400,
+    "requirements": ["cybernetics"],
+    "effects": [
+      { "type": "stat_multiplier", "target": "gold_reward", "value": 0.3 }
+    ]
+  },
+  "interstellar_drive": {
+    "id": "interstellar_drive",
+    "name": "Motor interestelar",
+    "era": "space",
+    "cost": { "gold": 7200000, "science": 144000 },
+    "duration_seconds": 6000,
+    "requirements": ["space_program"],
+    "effects": [
+      { "type": "stat_multiplier", "target": "damage", "value": 0.25 }
+    ]
+  },
+  "quantum_field": {
+    "id": "quantum_field",
+    "name": "Campo cuántico",
+    "era": "interstellar",
+    "cost": { "gold": 14400000, "science": 288000 },
+    "duration_seconds": 6600,
+    "requirements": ["interstellar_drive"],
+    "effects": [
+      { "type": "stat_multiplier", "target": "science_reward", "value": 0.35 }
     ]
   }
 }

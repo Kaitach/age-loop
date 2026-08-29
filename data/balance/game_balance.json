@@ -7,5 +7,7 @@
   "building_cost_growth": 1.35,
   "max_offline_hours": 8,
   "critical_chance_base": 0.05,
-  "critical_damage_base": 1.5
+  "critical_damage_base": 1.5,
+  "recommended_power_base": 180,
+  "recommended_power_growth": 1.14
 }

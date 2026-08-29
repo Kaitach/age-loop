@@ -42,19 +42,32 @@ func build_save_data() -> Dictionary:
 			"world": GameState.world,
 			"wave": GameState.wave,
 			"current_era": GameState.current_era,
+			"future_era_preview": GameState.future_era_preview,
 		},
 		"buildings": GameState.buildings,
 		"technologies": GameState.technologies,
 		"upgrades": GameState.upgrades,
+		"effect_modifiers": GameState.effect_modifiers,
+		"effect_additions": GameState.effect_additions,
+		"unlocked_items": GameState.unlocked_items,
+		"unlocked_buildings": GameState.unlocked_buildings,
+		"unlocked_units": GameState.unlocked_units,
 		"inventory": GameState.inventory,
+		"pending_items": GameState.pending_items,
 		"equipment": GameState.equipped_items,
-		"research": { "current": GameState.current_research, "completed": [] },
+		"pets": {
+			"active_id": GameState.active_pet_id,
+			"levels": GameState.pet_levels,
+		},
+		"research": { "current": GameState.current_research, "completed": GameState.technologies.keys() },
+		"pending_notifications": GameState.pending_notifications,
 		"stats": {
 			"enemies_killed": GameState.stats.get("enemies_killed", 0),
 			"bosses_killed": GameState.stats.get("bosses_killed", 0),
 			"waves_completed": GameState.stats.get("waves_completed", 0),
 		},
 		"tutorial_flags": GameState.tutorial_flags,
+		"settings": GameState.settings,
 		"timestamps": { "last_played_at": GameState.last_played_at },
 	}
 
@@ -72,9 +85,26 @@ func load_game() -> bool:
 	return true
 
 func migrate_save(data: Dictionary) -> Dictionary:
+	data = data.duplicate(true)
 	var version := int(data.get("version", 0))
 	if version > SAVE_VERSION:
 		push_warning("[SAVE] Save de version futura (%d)" % version)
+	if not data.has("currencies"):
+		data["currencies"] = {}
+	if not data.has("progression"):
+		data["progression"] = {}
+	if not data.has("research"):
+		data["research"] = { "current": null, "completed": [] }
+	var research: Dictionary = data["research"]
+	if not data.has("technologies"):
+		data["technologies"] = {}
+	if data["technologies"].is_empty() and research.get("completed", []) is Array:
+		for technology_id in research.get("completed", []):
+			data["technologies"][String(technology_id)] = true
+	for key in ["buildings", "upgrades", "inventory", "pending_items", "equipment", "pets", "stats", "tutorial_flags", "settings", "effect_modifiers", "effect_additions", "unlocked_items", "unlocked_buildings", "unlocked_units", "pending_notifications"]:
+		if not data.has(key):
+			data[key] = {} if key in ["buildings", "upgrades", "equipment", "pets", "stats", "tutorial_flags", "settings", "effect_modifiers", "effect_additions", "unlocked_items", "unlocked_buildings", "unlocked_units"] else []
+	data["version"] = maxi(version, SAVE_VERSION)
 	return data
 
 func delete_save() -> void:
@@ -111,15 +141,28 @@ func _apply_to_game_state(data: Dictionary) -> void:
 	GameState.world = int(progression.get("world", 1))
 	GameState.wave = int(progression.get("wave", 1))
 	GameState.current_era = String(progression.get("current_era", "prehistoric"))
+	GameState.future_era_preview = String(progression.get("future_era_preview", "medieval"))
 
 	GameState.buildings = data.get("buildings", {})
 	GameState.technologies = data.get("technologies", {})
 	GameState.upgrades = data.get("upgrades", {})
+	GameState.effect_modifiers = data.get("effect_modifiers", {})
+	GameState.effect_additions = data.get("effect_additions", {})
+	GameState.unlocked_items = data.get("unlocked_items", {})
+	GameState.unlocked_buildings = data.get("unlocked_buildings", {})
+	GameState.unlocked_units = data.get("unlocked_units", {})
 	GameState.inventory = data.get("inventory", [])
+	GameState.pending_items = data.get("pending_items", [])
 	GameState.equipped_items = data.get("equipment", {})
+	var pets: Dictionary = data.get("pets", {})
+	GameState.active_pet_id = String(pets.get("active_id", "wolf"))
+	GameState.pet_levels = pets.get("levels", {"wolf": 1})
+	if GameState.pet_levels.is_empty():
+		GameState.pet_levels = {"wolf": 1}
 
 	var research: Dictionary = data.get("research", {})
 	GameState.current_research = research.get("current", null)
+	GameState.pending_notifications = data.get("pending_notifications", [])
 
 	var stats: Dictionary = data.get("stats", {})
 	GameState.stats["enemies_killed"] = int(stats.get("enemies_killed", 0))
@@ -129,3 +172,16 @@ func _apply_to_game_state(data: Dictionary) -> void:
 	var timestamps: Dictionary = data.get("timestamps", {})
 	GameState.last_played_at = int(timestamps.get("last_played_at", 0))
 	GameState.tutorial_flags = data.get("tutorial_flags", {})
+	var settings: Dictionary = data.get("settings", {})
+	for key in GameState.settings.keys():
+		if settings.has(key):
+			GameState.settings[key] = settings[key]
+	_rebuild_derived_state_if_needed()
+	AudioManager.refresh_from_state()
+
+func _rebuild_derived_state_if_needed() -> void:
+	# Older saves stored only completed technologies. Rebuild derived unlocks/effects once.
+	if GameState.effect_modifiers.is_empty() and GameState.effect_additions.is_empty() and GameState.unlocked_items.is_empty() and GameState.unlocked_buildings.is_empty() and GameState.unlocked_units.is_empty():
+		for technology_id in GameState.technologies.keys():
+			var tech: Dictionary = DataLoader.load_json("technologies/technologies.json").get(String(technology_id), {})
+			EffectProcessor.apply(tech.get("effects", []))
