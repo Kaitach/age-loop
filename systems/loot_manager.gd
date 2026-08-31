@@ -30,6 +30,9 @@ func roll_drop(loot_chance: float, world: int, wave: int, is_boss: bool = false)
 		"stats": _roll_base_stats(template, level_mult, float(rarity.get("mult", 1.0))),
 		"modifiers": _roll_modifiers(items_data, template, rarity, level_mult),
 		"sell_value": int(round((BASE_SELL_VALUE + SELL_PER_LEVEL * level) * float(rarity.get("mult", 1.0)))),
+		"favorite": false,
+		"trash": false,
+		"acquired_at": int(Time.get_unix_time_from_system()),
 	}
 
 func roll_rarity() -> String:

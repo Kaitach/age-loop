@@ -47,6 +47,7 @@ func build_save_data() -> Dictionary:
 		"buildings": GameState.buildings,
 		"technologies": GameState.technologies,
 		"upgrades": GameState.upgrades,
+		"equipment_presets": GameState.equipment_presets,
 		"effect_modifiers": GameState.effect_modifiers,
 		"effect_additions": GameState.effect_additions,
 		"unlocked_items": GameState.unlocked_items,
@@ -146,6 +147,7 @@ func _apply_to_game_state(data: Dictionary) -> void:
 	GameState.buildings = data.get("buildings", {})
 	GameState.technologies = data.get("technologies", {})
 	GameState.upgrades = data.get("upgrades", {})
+	GameState.equipment_presets = data.get("equipment_presets", {})
 	GameState.effect_modifiers = data.get("effect_modifiers", {})
 	GameState.effect_additions = data.get("effect_additions", {})
 	GameState.unlocked_items = data.get("unlocked_items", {})
@@ -154,6 +156,12 @@ func _apply_to_game_state(data: Dictionary) -> void:
 	GameState.inventory = data.get("inventory", [])
 	GameState.pending_items = data.get("pending_items", [])
 	GameState.equipped_items = data.get("equipment", {})
+	_normalize_item_flags(GameState.inventory)
+	_normalize_item_flags(GameState.pending_items)
+	for slot in GameState.equipped_items.keys():
+		var eq = GameState.equipped_items[slot]
+		if eq is Dictionary:
+			_normalize_item_flags([eq])
 	var pets: Dictionary = data.get("pets", {})
 	GameState.active_pet_id = String(pets.get("active_id", "wolf"))
 	GameState.pet_levels = pets.get("levels", {"wolf": 1})
@@ -178,6 +186,19 @@ func _apply_to_game_state(data: Dictionary) -> void:
 			GameState.settings[key] = settings[key]
 	_rebuild_derived_state_if_needed()
 	AudioManager.refresh_from_state()
+
+func _normalize_item_flags(items: Array) -> void:
+	for it in items:
+		if not (it is Dictionary):
+			continue
+		if not it.has("favorite"):
+			it["favorite"] = false
+		if not it.has("trash"):
+			it["trash"] = false
+		if not it.has("acquired_at"):
+			it["acquired_at"] = 0
+		if not it.has("sell_value"):
+			it["sell_value"] = 0
 
 func _rebuild_derived_state_if_needed() -> void:
 	# Older saves stored only completed technologies. Rebuild derived unlocks/effects once.

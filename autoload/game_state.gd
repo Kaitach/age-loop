@@ -14,6 +14,7 @@ var future_era_preview: String = "medieval"
 var inventory: Array = []
 var pending_items: Array = []
 var equipped_items: Dictionary = {}
+var equipment_presets: Dictionary = {}
 var active_pet_id: String = "wolf"
 var pet_levels: Dictionary = {"wolf": 1}
 var buildings: Dictionary = {}
